@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Damion&family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <title>Pazar | Prijava</title>
+</head>
+
+<body>
+    <div class="row">
+        <div class="login-div col s10 m8 l4 offset-s1 offset-m2 offset-l4 center-align">
+            <h6 class="bold">Prijavite se s već postojećim korisničkim računom</h6>
+            <div id="login">
+                <div class="input-field">
+                    <input id="loginUsername" type="text">
+                    <label for="loginUsername" class="active">Korisničko ime</label>
+                </div>
+                <div class="input-field">
+                    <input id="loginPassword" type="password">
+                    <label for="loginPassword" class="active">Lozinka</label>
+                </div>
+                <a class="waves-effect waves-light btn account-btn" id="loginBtn">Prijavi se</a>
+            </div>
+        </div>
+        <div class="col s12 m12 l12 center-align or">
+            <p>ILI</p>
+        </div>
+        <div class="register-div col s10 m8 l4 offset-s1 offset-m2 offset-l4 center-align">
+            <h6 class="bold">Registrirajte novi korisnički račun</h6>
+            <div id="register">
+                <div class="input-field">
+                    <input id="registerUsername" type="text">
+                    <label for="registerUsername" class="active">Korisničko ime</label>
+                </div>
+                <div class="input-field">
+                    <input id="email" type="email">
+                    <label for="email" class="active">Email</label>
+                </div>
+                <div class="input-field">
+                    <input id="registerPassword" type="password">
+                    <label for="registerPassword" class="active">Lozinka</label>
+                </div>
+                <div class="input-field">
+                    <input id="confirmPassword" type="password">
+                    <label for="confirmPassword" class="active">Potvrdite lozinku</label>
+                </div>
+                <a class="waves-effect waves-light btn account-btn">Registriraj se</a>
+            </div>
+        </div>
+        <div class="col s12 m12 l12 center-align back"><a href="../html/index.html"><u>Natrag na početnu stranicu</u></a>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-compat.js"></script>
+    <script src="../js components/main.js"></script>
+</body>
+
+</html>

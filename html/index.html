@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Damion&family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <title>Pazar | Pocetna</title>
+</head>
+
+<body>
+    <!--navbar-->
+    <nav>
+        <div class="nav-wraper">
+            <a href="#" data-target="sidebar" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <a href="#" class="brand-logo right">Pazar</a>
+            <!--navbar login/register-->
+            <ul class="left hide-on-med-and-down" id="accountLoginButtons">
+                <li id="navLogin"><a href="login.html">Prijava</a></li>
+                <li id="navAccount"><a href="account.html">Korisnički račun</a></li>
+                <li id="navLogout"><a href="" onclick="Logout()">Odjava</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!--mobile sidebar-->
+    <div>
+        <!--sidebar login/register-->
+        <ul id="sidebar" class="sidenav">
+            <!--mobile login-->
+            <div id="sidebarLogin">
+                <li class="center-align">
+                    <p class="sidebarText bold">Niste prijavljeni</p>
+                </li>
+                <p class="sidebarText center-align">Trebate se prijaviti ili registrirati novi korisnički račun kako
+                    biste
+                    koristili ovu web-stranicu</p>
+                <div class="center-align">
+                    <a class="waves-effect waves-light btn" href="login.html">Prijavi se</a>
+                </div>
+            </div>
+            <div id="userVisible">
+                <!--account managment-->
+                <div id="sidebarAccount" class="center-align">
+                    <a class="waves-effect waves-light btn" href="account.html">Korisnički račun</a>
+                </div>
+                <!--logout-->
+                <div id="sidebarLogout" class="center-align">
+                    <a class="waves-effect waves-light btn" onclick="Logout()">Odjava</a>
+                </div>
+            </div>
+        </ul>
+
+    </div>
+    <!--content-->
+    <main>
+        <div class="row container center-align">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s4"><a href="#tab1">Što je Pazar</a></li>
+                    <li class="tab col s4"><a href="#tab2">Zašto Pazar</a></li>
+                    <li class="tab col s4"><a href="#tab3">Više o Pazaru</a></li>
+                </ul>
+            </div>
+            <div id="tab1" class="col s12 left-align">
+                <h3>Što je Pazar?</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis nihil sint quod fuga, nam a debitis
+                    excepturi laborum atque soluta nostrum non dolorum? Hic velit quibusdam ipsam molestiae fuga soluta.
+                </p>
+            </div>
+            <div id="tab2" class="col s12 left-align">
+                <h3>Zašto Pazar?</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis nihil sint quod fuga, nam a debitis
+                    excepturi laborum atque soluta nostrum non dolorum? Hic velit quibusdam ipsam molestiae fuga soluta.
+                </p>
+            </div>
+            <div id="tab3" class="col s12 left-align">
+                <h3>Više o Pazaru</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis nihil sint quod fuga, nam a debitis
+                    excepturi laborum atque soluta nostrum non dolorum? Hic velit quibusdam ipsam molestiae fuga soluta.
+                </p>
+            </div>
+        </div>
+    </main>
+    <!--footer-->
+    <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-firestore-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="../js components/main.js"></script>
+    <script src="../js components/init.js"></script>
+</body>
+
+</html>
