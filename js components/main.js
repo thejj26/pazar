@@ -13,13 +13,7 @@ let database = app.firestore()
 
 //user managment
 class User {
-    constructor(username = "", password = "", email = "", posts = [], info = {
-        location: "",
-        phone: "",
-        birthday: new Date(),
-        bio: "",
-        logo: ""
-    }) {
+    constructor(username = "", password = "", email = "", posts = [], info = []) {
         this.username = username
         this.password = password
         this.email = email
@@ -38,7 +32,6 @@ function Login() {
     database.collection("users").where("username", "==", String(document.getElementById("loginUsername").value)).where("password", "==", String(document.getElementById("loginPassword").value)).get().then((data) => {
         data.forEach((user) => {
             tempUser = user.data()
-            console.log(user)
             new User(user.data().username, user.data().password, user.data().email, user.data().posts, user.data().info).store()
             window.location.href = "../html/index.html"
         })
@@ -50,7 +43,50 @@ function Login() {
     })
 }
 
-function Register() {}
+function Register() {
+    let canBeRegistered = true
+    switch ("") {
+        case document.getElementById("registerUsername").value:
+            alert("Korisničko ime je obavezno")
+            canBeRegistered = false
+            return
+        case document.getElementById("registerPassword").value:
+            alert("Lozinka je obavezna")
+            canBeRegistered = false
+            return
+        case document.getElementById("email").value:
+            alert("Email je obavezan")
+            canBeRegistered = false
+            return
+    }
+    database.collection("users").get().then((data) => {
+        data.forEach((user) => {
+            if (user.data().username == document.getElementById("registerUsername").value && canBeRegistered == true) {
+                alert("Korisničko ime je zauzeto")
+                canBeRegistered = false
+                return
+            } else if (user.data().email == document.getElementById("email").value && canBeRegistered == true) {
+                alert("Email se već koristi")
+                canBeRegistered = false
+                return
+            }
+        })
+    })
+    console.log(canBeRegistered)
+
+    if (canBeRegistered) {
+        database.collection("users").add({
+            username: String(document.getElementById("registerUsername").value),
+            password: String(document.getElementById("registerPassword").value),
+            email: String(document.getElementById("email").value),
+            posts: [],
+            info: []
+        }).then(() => {
+            new User(document.getElementById("registerUsername").value, document.getElementById("registerPassword").value, document.getElementById("email").value, [], []).store()
+            window.location.href = "../html/index.html"
+        })
+    }
+}
 
 function Logout() {
     localStorage.removeItem("user")
@@ -59,18 +95,45 @@ function Logout() {
 
 
 //DOM user managment
-if (document.getElementById("loginBtn")) {
+if (document.location.href.includes("login.html")) {
     document.getElementById("loginBtn").addEventListener("click", () => Login())
+    document.getElementById("registerBtn").addEventListener("click", () => Register())
 }
 
 window.addEventListener("load", () => {
-    if(window.location.href.includes("login.html")) return
-    if (localStorage.getItem("user") != null) {
-        document.getElementById("sidebarLogin").style.display = "none"
-        document.getElementById("navLogin").style.display = "none"
-    } else {
-        document.getElementById("userVisible").style.display = "none"
-        document.getElementById("navAccount").style.display = "none"
-        document.getElementById("navLogout").style.display = "none"
+    if (!window.location.href.includes("login.html")) { //izbjegavanje errora radi nepostojecih elemenata
+        document.getElementById("navLogout").addEventListener("click", () => Logout())
+        if (localStorage.getItem("user") != null) { //korisnik je ulogiran
+            document.getElementById("sidebarLogin").style.display = "none"
+            document.getElementById("navLogin").style.display = "none"
+        } else { //korisnik nije ulogiran
+            document.getElementById("userVisible").style.display = "none"
+            document.getElementById("navAccount").style.display = "none"
+            document.getElementById("navLogout").style.display = "none"
+        }
+    }
+
+    //korisnicki podatci
+    if (window.location.href.includes("account.html")) {
+        let user = JSON.parse(localStorage.getItem("user"))
+        document.getElementById("username").innerHTML = user.username
+        document.getElementById("email").innerHTML = user.email
+        document.getElementById("password").innerHTML = user.password.replace(/./g, "*")
+        if (user.info[0]) {
+            document.getElementById("phone").innerHTML = user.info[0]
+        }
+        if (user.info[1]) {
+            document.getElementById("location").innerHTML = user.info[1]
+        }
+        if (user.info[2]) {
+            let birthday = new Date(user.info[2].seconds * 1000).toLocaleString().split(",")[0].split("/")
+            document.getElementById("birthday").innerHTML = birthday[1] + "." + birthday[0] + "." + birthday[2]
+        }
+        if (user.info[3]) {
+            document.getElementById("bio").innerHTML = user.info[3]
+        }
+        if (user.info[4]) {
+            document.getElementById("logo").src = user.info[4]
+        }
     }
 })
