@@ -1,0 +1,114 @@
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+nav {
+    background: linear-gradient(to right, #488f32, #6eca51) fixed !important;
+}
+
+.sidebarText {
+    color: #868686;
+}
+
+.bold {
+    font-weight: 500;
+}
+
+nav li {
+    font-weight: 600;
+}
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+.brand-logo {
+    font-family: 'Damion', cursive;
+    font-size: 3em !important;
+}
+
+.sidenav .btn {
+    width: 80%;
+    margin-top: 2em;
+}
+
+.input-field input:focus+label {
+    color: #868686 !important;
+}
+
+.input-field input:focus,
+.input-field textarea:focus {
+    border-bottom: 1px solid #868686 !important;
+    box-shadow: none !important;
+}
+
+.input-field textarea {
+    border: 1px solid #868686 !important;
+    height: 20vh !important;
+}
+
+.btn,
+.sidenav-trigger {
+    color: white;
+    font-weight: 600 !important;
+}
+
+.btn {
+    background: linear-gradient(to top right, #63c246, #60c940);
+}
+
+.tabs .tab a {
+    color: #57ac3e !important;
+    background-color: #57e02d38 !important;
+}
+
+.tabs .tab a:hover {
+    background-color: #48bd2438 !important;
+}
+
+.tabs .tab a:focus {
+    background-color: #5faf4738 !important;
+    color: #727272 !important;
+}
+
+.tabs .indicator {
+    background-color: #70d651 !important;
+}
+
+main {
+    margin-top: 4em;
+}
+
+main div div h3 {
+    color: #488f32;
+}
+
+main div div p {
+    color: #727272;
+}
+
+.image-container img {
+    width: 10em !important;
+    height: 10em !important;
+    border-radius: 100%;
+    border: 1px solid #868686;
+    margin: 3em;
+}
+
+.user-info p {
+    font-size: 1.5em;
+    color: #488f32;
+    display: inline-block;
+}
+
+.user-info h6 {
+    font-size: 1.5em;
+    color: #727272;
+    display: inline-block;
+    margin-left: .5em;
+}
+
+#bio{
+    display: block;
+}
