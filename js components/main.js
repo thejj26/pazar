@@ -10,8 +10,6 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig)
 let database = app.firestore()
 
-
-//user managment
 class User {
     constructor(username = "", password = "", email = "", posts = [], info = []) {
         this.username = username
@@ -29,12 +27,14 @@ class User {
 function Login() {
     let tempUser = null
 
+    //trazenje korisnika
     database.collection("users").where("username", "==", String(document.getElementById("loginUsername").value)).where("password", "==", String(document.getElementById("loginPassword").value)).get().then((data) => {
         data.forEach((user) => {
             tempUser = user.data()
             new User(user.data().username, user.data().password, user.data().email, user.data().posts, user.data().info).store()
             window.location.href = "../html/index.html"
         })
+        //nije naden korisnik
         if (tempUser == null) {
             alert("Krivi korisnički podatci, pokušajte opet")
             document.getElementById("loginUsername").value = ""
@@ -44,6 +44,7 @@ function Login() {
 }
 
 function Register() {
+    //detekcija praznih polja
     let canBeRegistered = true
     switch ("") {
         case document.getElementById("registerUsername").value:
@@ -59,6 +60,13 @@ function Register() {
             canBeRegistered = false
             return
     }
+    //provjera podudaranja lozinki
+    if(document.getElementById("registerPassword").value != document.getElementById("confirmPassword").value){
+        alert("Lozinke se ne podudaraju")
+        canBeRegistered = false
+        return
+    }
+    //provjera korisnickog imena i emaila
     database.collection("users").get().then((data) => {
         data.forEach((user) => {
             if (user.data().username == document.getElementById("registerUsername").value && canBeRegistered == true) {
@@ -71,20 +79,22 @@ function Register() {
                 return
             }
         })
+        addUser(canBeRegistered)
     })
-    console.log(canBeRegistered)
-
-    if (canBeRegistered) {
-        database.collection("users").add({
-            username: String(document.getElementById("registerUsername").value),
-            password: String(document.getElementById("registerPassword").value),
-            email: String(document.getElementById("email").value),
-            posts: [],
-            info: []
-        }).then(() => {
-            new User(document.getElementById("registerUsername").value, document.getElementById("registerPassword").value, document.getElementById("email").value, [], []).store()
-            window.location.href = "../html/index.html"
-        })
+    //dadavanje novog korisnika
+    function addUser(bool) {
+        if (bool) {
+            database.collection("users").add({
+                username: String(document.getElementById("registerUsername").value),
+                password: String(document.getElementById("registerPassword").value),
+                email: String(document.getElementById("email").value),
+                posts: [],
+                info: []
+            }).then(() => {
+                new User(document.getElementById("registerUsername").value, document.getElementById("registerPassword").value, document.getElementById("email").value, [], []).store()
+                window.location.href = "../html/index.html"
+            })
+        }
     }
 }
 
@@ -95,7 +105,7 @@ function Logout() {
 
 
 //DOM user managment
-if (document.location.href.includes("login.html")) {
+if (document.location.href.includes("login.html")) {    //dodaje eventove buttonima
     document.getElementById("loginBtn").addEventListener("click", () => Login())
     document.getElementById("registerBtn").addEventListener("click", () => Register())
 }
@@ -113,7 +123,7 @@ window.addEventListener("load", () => {
         }
     }
 
-    //korisnicki podatci
+    //popunjavanje korisnickih podataka
     if (window.location.href.includes("account.html")) {
         let user = JSON.parse(localStorage.getItem("user"))
         document.getElementById("username").innerHTML = user.username
