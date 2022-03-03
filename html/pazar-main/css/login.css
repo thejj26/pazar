@@ -1,0 +1,39 @@
+body {
+    background: linear-gradient(to top left, #4c9636, #98ff78) fixed;
+    z-index: -1 !important;
+}
+
+.login-div,
+.register-div {
+    background-color: #ffffff;
+    height: fit-content;
+    padding: 2em !important;
+    margin-top: 5vh;
+    z-index: 1 !important;
+    border-radius: .35em;
+}
+
+.login-div {
+    margin-top: 3vh !important;
+}
+
+h6 {
+    color: #868686;
+    margin-bottom: 3em !important;
+}
+
+.or {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 3em;
+    margin-bottom: -1.75em;
+    margin-top: -0.75em;
+}
+
+.back {
+    margin-top: 2em !important;
+}
+
+.back a {
+    color: #fff;
+}

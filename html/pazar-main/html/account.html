@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Damion&family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <title>Pazar | Moj Racun</title>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wraper">
+            <a href="#" data-target="sidebar" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <a href="#" class="brand-logo right">Pazar</a>
+            <!--navbar login/register-->
+            <ul class="left hide-on-med-and-down" id="accountLoginButtons">
+                <li id="navLogin"><a href="login.html">Prijava</a></li>
+                <li id="navAccount"><a href="account.html">Korisnički račun</a></li>
+                <li id="navLogout"><a href="index.html" onclick="Logout()">Odjava</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!--mobile sidebar-->
+    <div>
+        <!--sidebar login/register-->
+        <ul id="sidebar" class="sidenav">
+            <!--mobile login-->
+            <div id="sidebarLogin">
+                <li class="center-align">
+                    <p class="sidebarText bold">Niste prijavljeni</p>
+                </li>
+                <p class="sidebarText center-align">Trebate se prijaviti ili registrirati novi korisnički račun kako
+                    biste
+                    koristili ovu web-stranicu</p>
+                <div class="center-align">
+                    <a class="waves-effect waves-light btn" href="login.html">Prijavi se</a>
+                </div>
+            </div>
+            <div id="userVisible">
+                <!--account managment-->
+                <div id="sidebarAccount" class="center-align">
+                    <a class="waves-effect waves-light btn" href="account.html">Korisnički račun</a>
+                </div>
+                <!--logout-->
+                <div id="sidebarLogout" class="center-align">
+                    <a class="waves-effect waves-light btn" onclick="Logout()">Odjava</a>
+                </div>
+            </div>
+        </ul>
+
+    </div>
+    <!--user info-->
+    <main>
+        <div class="row container">
+            <div class="col s12 m12 l12 user-info">
+                <div class="image-container center-align">
+                    <img src="https://i.imgur.com/UhE3TDY.png" id="logo">
+                </div>
+                <p>Korisničko ime:<h6 id="username"></h6>
+                </p>
+                <br>
+                <p>Email:<h6 id="email"></h6>
+                </p>
+                <br>
+                <p>Lozinka:<h6 id="password"></h6>
+                </p>
+                <br>
+                <p>Telefon:<h6 id="phone"></h6>
+                </p>
+                <br>
+                <p>Lokacija:<h6 id="location"></h6>
+                </p>
+                <br>
+                <p>Datum rođenja:<h6 id="birthday"></h6>
+                </p>
+                <br>
+                <p>Kratak opis</h5>
+                <br>
+                <h6 id="bio"></h6>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-firestore-compat.js"></script>
+    <script src="../js components/init.js"></script>
+    <script src="../js components/main.js"></script>
+</body>
+
+</html>
