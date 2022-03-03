@@ -99,8 +99,8 @@ function Register() {
 }
 
 function Logout() {
-    localStorage.removeItem("user")
     window.location.href = "../html/index.html"
+    localStorage.removeItem("user")
 }
 
 
@@ -112,7 +112,6 @@ if (document.location.href.includes("login.html")) {    //dodaje eventove button
 
 window.addEventListener("load", () => {
     if (!window.location.href.includes("login.html")) { //izbjegavanje errora radi nepostojecih elemenata
-        document.getElementById("navLogout").addEventListener("click", () => Logout())
         if (localStorage.getItem("user") != null) { //korisnik je ulogiran
             document.getElementById("sidebarLogin").style.display = "none"
             document.getElementById("navLogin").style.display = "none"
