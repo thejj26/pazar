@@ -109,6 +109,17 @@ main div div p {
     margin-left: .5em;
 }
 
-#bio{
+#bio {
     display: block;
+}
+
+#editBtn {
+    color: #488f32;
+    background: none;
+    box-shadow: none;
+    height: fit-content;
+}
+
+#editBtn i{
+    font-size: 3em;
 }
