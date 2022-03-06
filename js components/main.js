@@ -10,6 +10,7 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig)
 let database = app.firestore()
 
+//klasa za spremanje local usera
 class User {
     constructor(username = "", password = "", email = "", posts = [], info = []) {
         this.username = username
@@ -23,13 +24,15 @@ class User {
     }
 }
 
-
+//login
 function Login() {
     let tempUser = null
-
+    const username = document.getElementById("loginUsername")
+    const password = document.getElementById("loginPassword")
     //trazenje korisnika
-    database.collection("users").where("username", "==", String(document.getElementById("loginUsername").value)).where("password", "==", String(document.getElementById("loginPassword").value)).get().then((data) => {
+    database.collection("users").where("username", "==", username.value).where("password", "==", password.value).get().then((data) => {
         data.forEach((user) => {
+            //spremanje korisnika u local storage
             tempUser = user.data()
             new User(user.data().username, user.data().password, user.data().email, user.data().posts, user.data().info).store()
             window.location.href = "../html/index.html"
@@ -37,8 +40,8 @@ function Login() {
         //nije naden korisnik
         if (tempUser == null) {
             alert("Krivi korisnički podatci, pokušajte opet")
-            document.getElementById("loginUsername").value = ""
-            document.getElementById("loginPassword").value = ""
+            username.value = ""
+            password.value = ""
         }
     })
 }
@@ -46,22 +49,27 @@ function Login() {
 function Register() {
     //detekcija praznih polja
     let canBeRegistered = true
+    const username = document.getElementById("registerUsername")
+    const password = document.getElementById("registerPassword")
+    const confirmPassword = document.getElementById("confirmPassword")
+    const email = document.getElementById("email")
+
     switch ("") {
-        case document.getElementById("registerUsername").value:
+        case username.value:
             alert("Korisničko ime je obavezno")
             canBeRegistered = false
             return
-        case document.getElementById("registerPassword").value:
+        case password.value:
             alert("Lozinka je obavezna")
             canBeRegistered = false
             return
-        case document.getElementById("email").value:
+        case email.value:
             alert("Email je obavezan")
             canBeRegistered = false
             return
     }
     //provjera podudaranja lozinki
-    if (document.getElementById("registerPassword").value != document.getElementById("confirmPassword").value) {
+    if (password.value != confirmPassword.value) {
         alert("Lozinke se ne podudaraju")
         canBeRegistered = false
         return
@@ -69,11 +77,11 @@ function Register() {
     //provjera korisnickog imena i emaila
     database.collection("users").get().then((data) => {
         data.forEach((user) => {
-            if (user.data().username == document.getElementById("registerUsername").value && canBeRegistered == true) {
+            if (user.data().username == username.value && canBeRegistered == true) {
                 alert("Korisničko ime je zauzeto")
                 canBeRegistered = false
                 return
-            } else if (user.data().email == document.getElementById("email").value && canBeRegistered == true) {
+            } else if (user.data().email == email.value && canBeRegistered == true) {
                 alert("Email se već koristi")
                 canBeRegistered = false
                 return
@@ -85,18 +93,18 @@ function Register() {
     function addUser(bool) {
         if (bool) {
             database.collection("users").add({
-                username: String(document.getElementById("registerUsername").value),
-                password: String(document.getElementById("registerPassword").value),
-                email: String(document.getElementById("email").value),
+                username: username.value,
+                password: password.value,
+                email: email.value,
                 posts: [],
                 info: []
             })
-            new User(document.getElementById("registerUsername").value, document.getElementById("registerPassword").value, document.getElementById("email").value, [], []).store()
+            new User(username.value, password.value, email.value, [], []).store()
             window.location.href = "../html/index.html"
         }
     }
 }
-
+//logout
 function Logout() {
     window.location.href = "../html/index.html"
     localStorage.removeItem("user")
@@ -104,42 +112,51 @@ function Logout() {
 
 //mijenjanje korisnickih podataka
 function UpdateUserInfo() {
+
+    const editUsername = document.getElementById("editUsername")
+    const editEmail = document.getElementById("editEmail")
+    const editPhone = document.getElementById("editPhone")
+    const editLocation = document.getElementById("editLocation")
+    const editBirthday = document.getElementById("editBirthday")
+    const editBio = document.getElementById("editBio")
+    const imageLink = document.getElementById("imageLink")
+    //funkcija za update local storagea
     function UpdateLocalUser(bool) {
         console.log(bool)
         if (!bool) return
-        database.collection("users").where("username", "==", document.getElementById("editUsername").value).get().then((data) => {
+        database.collection("users").where("username", "==", editUsername.value).get().then((data) => {
             data.forEach((user) => {
                 new User(user.data().username, user.data().password, user.data().email, user.data().posts, user.data().info).store()
                 window.location.href = "../html/index.html"
             })
         })
     }
-
+    //dohvacanje firestore user id trenutnog korisnika
     let localuser = JSON.parse(localStorage.getItem("user"))
     let userId = ""
-    //dohvacanje firestore user id trenutnog korisnika
+
     database.collection("users").where("username", "==", localuser.username).get().then(data => {
         data.forEach(user => {
             userId = user.id
         })
     }).then(() => { //update podataka korisnika
         let updated = false
+        //dodavanje na firestore
         database.collection("users").doc(userId).update({
-            username: document.getElementById("editUsername").value,
-            email: document.getElementById("editEmail").value,
+            username: editUsername.value,
+            email: editEmail.value,
             info: [
-                document.getElementById("editPhone").value,
-                document.getElementById("editLocation").value,
-                document.getElementById("editBirthday").value,
-                document.getElementById("editBio").value,
-                document.getElementById("imageLink").value
+                editPhone.value,
+                editLocation.value,
+                editBirthday.value,
+                editBio.value,
+                imageLink.value
             ]
-        }).then(() => {
+            //update local storagea
+        }).then(updated = true).then(() => {
             UpdateLocalUser(updated)
         })
-
     })
-    //promjena local usera
 }
 
 
@@ -150,6 +167,7 @@ if (document.location.href.includes("login.html")) { //dodaje eventove buttonima
 }
 
 window.addEventListener("load", () => {
+    //sve stranice soim logina (navbar,sidebar)
     if (!window.location.href.includes("login.html")) { //izbjegavanje errora radi nepostojecih elemenata
         if (localStorage.getItem("user") != null) { //korisnik je ulogiran
             document.getElementById("sidebarLogin").style.display = "none"
@@ -183,14 +201,24 @@ window.addEventListener("load", () => {
             document.getElementById("logo").src = user.info[4]
         }
     }
+    //popunjavanje korisnickih podataka za accountEdit
     if (window.location.href.includes("accountEdit")) {
+
         let user = JSON.parse(localStorage.getItem("user"))
-        document.getElementById("imageLink").value = user.info[4]
-        document.getElementById("editUsername").value = user.username
-        document.getElementById("editEmail").value = user.email
-        document.getElementById("editPhone").value = user.info[0]
-        document.getElementById("editLocation").value = user.info[1]
-        document.getElementById("editBirthday").value = user.info[2]
-        document.getElementById("editBio").value = user.info[3]
+        const editUsername = document.getElementById("editUsername")
+        const editEmail = document.getElementById("editEmail")
+        const editPhone = document.getElementById("editPhone")
+        const editLocation = document.getElementById("editLocation")
+        const editBirthday = document.getElementById("editBirthday")
+        const editBio = document.getElementById("editBio")
+        const imageLink = document.getElementById("imageLink")
+
+        imageLink.value = user.info[4]
+        editUsername.value = user.username
+        editEmail.value = user.email
+        editPhone.value = user.info[0]
+        editLocation.value = user.info[1]
+        editBirthday.value = user.info[2]
+        editBio.value = user.info[3]
     }
 })
