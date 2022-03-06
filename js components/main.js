@@ -61,7 +61,7 @@ function Register() {
             return
     }
     //provjera podudaranja lozinki
-    if(document.getElementById("registerPassword").value != document.getElementById("confirmPassword").value){
+    if (document.getElementById("registerPassword").value != document.getElementById("confirmPassword").value) {
         alert("Lozinke se ne podudaraju")
         canBeRegistered = false
         return
@@ -90,10 +90,9 @@ function Register() {
                 email: String(document.getElementById("email").value),
                 posts: [],
                 info: []
-            }).then(() => {
-                new User(document.getElementById("registerUsername").value, document.getElementById("registerPassword").value, document.getElementById("email").value, [], []).store()
-                window.location.href = "../html/index.html"
             })
+            new User(document.getElementById("registerUsername").value, document.getElementById("registerPassword").value, document.getElementById("email").value, [], []).store()
+            window.location.href = "../html/index.html"
         }
     }
 }
@@ -103,9 +102,49 @@ function Logout() {
     localStorage.removeItem("user")
 }
 
+//mijenjanje korisnickih podataka
+function UpdateUserInfo() {
+    function UpdateLocalUser(bool) {
+        console.log(bool)
+        if (!bool) return
+        database.collection("users").where("username", "==", document.getElementById("editUsername").value).get().then((data) => {
+            data.forEach((user) => {
+                new User(user.data().username, user.data().password, user.data().email, user.data().posts, user.data().info).store()
+                window.location.href = "../html/index.html"
+            })
+        })
+    }
+
+    let localuser = JSON.parse(localStorage.getItem("user"))
+    let userId = ""
+    //dohvacanje firestore user id trenutnog korisnika
+    database.collection("users").where("username", "==", localuser.username).get().then(data => {
+        data.forEach(user => {
+            userId = user.id
+        })
+    }).then(() => { //update podataka korisnika
+        let updated = false
+        database.collection("users").doc(userId).update({
+            username: document.getElementById("editUsername").value,
+            email: document.getElementById("editEmail").value,
+            info: [
+                document.getElementById("editPhone").value,
+                document.getElementById("editLocation").value,
+                document.getElementById("editBirthday").value,
+                document.getElementById("editBio").value,
+                document.getElementById("imageLink").value
+            ]
+        }).then(() => {
+            UpdateLocalUser(updated)
+        })
+
+    })
+    //promjena local usera
+}
+
 
 //DOM user managment
-if (document.location.href.includes("login.html")) {    //dodaje eventove buttonima
+if (document.location.href.includes("login.html")) { //dodaje eventove buttonima
     document.getElementById("loginBtn").addEventListener("click", () => Login())
     document.getElementById("registerBtn").addEventListener("click", () => Register())
 }
@@ -135,8 +174,7 @@ window.addEventListener("load", () => {
             document.getElementById("location").innerHTML = user.info[1]
         }
         if (user.info[2]) {
-            let birthday = new Date(user.info[2].seconds * 1000).toLocaleString().split(",")[0].split("/")
-            document.getElementById("birthday").innerHTML = birthday[1] + "." + birthday[0] + "." + birthday[2]
+            document.getElementById("birthday").innerHTML = user.info[2]
         }
         if (user.info[3]) {
             document.getElementById("bio").innerHTML = user.info[3]
@@ -144,5 +182,15 @@ window.addEventListener("load", () => {
         if (user.info[4]) {
             document.getElementById("logo").src = user.info[4]
         }
+    }
+    if (window.location.href.includes("accountEdit")) {
+        let user = JSON.parse(localStorage.getItem("user"))
+        document.getElementById("imageLink").value = user.info[4]
+        document.getElementById("editUsername").value = user.username
+        document.getElementById("editEmail").value = user.email
+        document.getElementById("editPhone").value = user.info[0]
+        document.getElementById("editLocation").value = user.info[1]
+        document.getElementById("editBirthday").value = user.info[2]
+        document.getElementById("editBio").value = user.info[3]
     }
 })

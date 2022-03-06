@@ -59,34 +59,65 @@
     <!--user info-->
     <main>
         <div class="row container">
-            <div class="center-align">
-                <a class="waves-effect waves-light btn" id="editBtn" href="accountEdit.html"><i class="material-icons">create</i></a>
-            </div>
             <div class="col s12 m12 l12 user-info">
                 <div class="image-container center-align">
                     <img src="https://i.imgur.com/UhE3TDY.png" id="logo">
+
+                    </p>
                 </div>
-                <p>Korisničko ime:<h6 id="username"></h6>
-                </p>
-                <br>
-                <p>Email:<h6 id="email"></h6>
-                </p>
-                <br>
-                <p>Lozinka:<h6 id="password"></h6>
-                </p>
-                <br>
-                <p>Telefon:<h6 id="phone"></h6>
-                </p>
-                <br>
-                <p>Lokacija:<h6 id="location"></h6>
-                </p>
-                <br>
-                <p>Datum rođenja:<h6 id="birthday"></h6>
-                </p>
-                <br>
-                <p>O sebi</p>
-                <br>
-                <h6 id="bio"></h6>
+                <p>Link na sliku:
+                    <div class="input-field">
+                        <input id="imageLink" type="text">
+                    </div>
+                    <p>Korisničko ime:
+                        <div class="input-field">
+                            <input id="editUsername" type="text">
+                        </div>
+                    </p>
+                    <br>
+                    <p>Email:
+                        <div class="input-field">
+                            <input id="editEmail" type="email">
+                        </div>
+                    </p>
+                    <br>
+                    <p>Lozinka:
+                        <div class="input-field">
+                            <input id="oldPassword" type="password">
+                            <label for="oldPassword">Stara lozinka</label>
+                        </div>
+                        <div class="input-field">
+                            <input id="newPassword" type="text">
+                            <label for="newPassword">Nova lozinka</label>
+                        </div>
+                    </p>
+                    <br>
+                    <p>Telefon:
+                        <div class="input-field">
+                            <input id="editPhone" type="text">
+                        </div>
+                    </p>
+                    <br>
+                    <p>Lokacija:
+                        <div class="input-field">
+                            <input id="editLocation" type="text">
+                        </div>
+                    </p>
+                    <br>
+                    <p>Datum rođenja:
+                        <div class="input-field">
+                            <input id="editBirthday" type="text">
+                        </div>
+                    </p>
+                    <br>
+                    <p>O sebi</p>
+                    <br>
+                    <div class="input-field col s12">
+                        <textarea id="editBio" class="materialize-textarea"></textarea>
+                    </div>
+            </div>
+            <div class="center-align">
+                <a class="waves-effect waves-light btn" onclick="UpdateUserInfo()">Potvrdi promjene</a>
             </div>
         </div>
     </main>
@@ -97,5 +128,4 @@
     <script src="../js components/init.js"></script>
     <script src="../js components/main.js"></script>
 </body>
-
 </html>
