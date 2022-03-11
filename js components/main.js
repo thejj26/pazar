@@ -96,7 +96,7 @@ function Register() {
                 username: username.value,
                 password: password.value,
                 email: email.value,
-                posts: [],
+                posts: ["Nije uneseno", "Nije uneseno", "Nije uneseno", "Nije uneseno", "https://i.imgur.com/UhE3TDY.png"],
                 info: []
             })
             new User(username.value, password.value, email.value, [], []).store()
@@ -112,18 +112,19 @@ function Logout() {
 
 //mijenjanje korisnickih podataka
 function UpdateUserInfo() {
-
     const editUsername = document.getElementById("editUsername")
     const editEmail = document.getElementById("editEmail")
+    const oldPassword = document.getElementById("oldPassword")
+    const newPassword = document.getElementById("newPassword")
     const editPhone = document.getElementById("editPhone")
     const editLocation = document.getElementById("editLocation")
     const editBirthday = document.getElementById("editBirthday")
     const editBio = document.getElementById("editBio")
     const imageLink = document.getElementById("imageLink")
     //funkcija za update local storagea
-    function UpdateLocalUser(bool) {
-        console.log(bool)
+    function UpdateLocalUser(bool, valid) {
         if (!bool) return
+        if (!valid) return
         database.collection("users").where("username", "==", editUsername.value).get().then((data) => {
             data.forEach((user) => {
                 new User(user.data().username, user.data().password, user.data().email, user.data().posts, user.data().info).store()
@@ -134,29 +135,117 @@ function UpdateUserInfo() {
     //dohvacanje firestore user id trenutnog korisnika
     let localuser = JSON.parse(localStorage.getItem("user"))
     let userId = ""
+    let canBeEdited = true
+    let birthday = editBirthday.value.split(".")
 
+    function Valiadate() {
+        //provjera dostupnosti koricniskog imena/emaila
+        database.collection("users").get().then(data => {
+            data.forEach(user => {
+                if (user.id != userId) {
+                    if (user.data().username == editUsername.value) {
+                        alert("Korisničko ime je zauzeto")
+                        canBeEdited = false
+                    } else if (user.data().email == editEmail.value) {
+                        alert("Email se već koristi")
+                        canBeEdited = false
+                    }
+                }
+            })
+        }).then(() => {
+            //provjera ispravnog datuma rodenja
+            if (birthday[0].length == 1 && birthday[0] != 0) {
+                birthday[0] = "0" + birthday[0]
+            }
+            if (birthday[1].length == 1 && birthday[1] != 0) {
+                birthday[1] = "0" + birthday[1]
+            }
+            editBirthday.value = birthday.join(".")
+            if (birthday[0] == 0 || birthday[1] == 0 || birthday[2] < 1920 || birthday.length > 3 || birthday.length < 3 || birthday[1] > 12) {
+                alert("Unesite ispravan datum rođenja")
+                canBeEdited = false
+                return 0
+            }
+            if (birthday[1].value == "02" && birthday[0] == 29 && birthday[2] % 4 != 0) {
+                alert("Unesite ispravan datum rođenja")
+                canBeEdited = false
+                return 0
+            }
+            if (["01", "03", "05", "07", "08", "10", "12"].includes(birthday[1]) && birthday[0] > 31) {
+                alert("Unesite ispravan datum rođenja")
+                canBeEdited = false
+                return 0
+            }
+            if (["04", "06", "09", "11"].includes(birthday[1]) && birthday[0] > 30) {
+                alert("Unesite ispravan datum rođenja")
+                canBeEdited = false
+                return 0
+            }
+            if (birthday[1] == "02" && birthday[0] > 28 && birthday[2] % 4 != 0) {
+                alert("Unesite ispravan datum rođenja")
+                canBeEdited = false
+                return 0
+            }
+
+
+            //provjera lozinke
+            if (oldPassword.value != "") {
+                if (oldPassword.value != localuser.password) {
+                    alert("Pogrešno unesena stara lozinka")
+                    canBeEdited = false
+                    return 0
+                } else if (newPassword.value.length < 6) {
+                    alert("Nova lozinka mora imati minimalno 6 znakova")
+                    canBeEdited = false
+                    return 0
+                } else if (newPassword.value == oldPassword.value) {
+                    alert("Nova lozinka ne smije biti ista kao stara")
+                    canBeEdited = false
+                    return 0
+                }
+            } else if (newPassword.value != "") {
+                alert("Stara lozinka ne smije biti prazna")
+                canBeEdited = false
+                return 0
+            }
+
+        })
+    }
     database.collection("users").where("username", "==", localuser.username).get().then(data => {
-        data.forEach(user => {
-            userId = user.id
+            data.forEach(user => {
+                userId = user.id
+            })
+        }).then(Valiadate())
+        //provjera validnosti unesenih podataka
+        .then(() => {
+            if (canBeEdited) {
+                //update podataka korisnika
+                if (birthday[0].length == 1 && birthday[0] != 0) {
+                    birthday[0] = "0" + birthday[0]
+                }
+                if (birthday[1].length == 1 && birthday[1] != 0) {
+                    birthday[1] = "0" + birthday[1]
+                }
+                editBirthday.value = birthday.join(".")
+                let updated = false
+                //dodavanje na firestore
+                database.collection("users").doc(userId).update({
+                    username: editUsername.value,
+                    email: editEmail.value,
+                    info: [
+                        editPhone.value,
+                        editLocation.value,
+                        editBirthday.value,
+                        editBio.value,
+                        imageLink.value
+                    ]
+                    //update local storagea
+                }).then(updated = true).then(() => {
+                    UpdateLocalUser(updated, canBeEdited)
+                })
+            }
         })
-    }).then(() => { //update podataka korisnika
-        let updated = false
-        //dodavanje na firestore
-        database.collection("users").doc(userId).update({
-            username: editUsername.value,
-            email: editEmail.value,
-            info: [
-                editPhone.value,
-                editLocation.value,
-                editBirthday.value,
-                editBio.value,
-                imageLink.value
-            ]
-            //update local storagea
-        }).then(updated = true).then(() => {
-            UpdateLocalUser(updated)
-        })
-    })
+
 }
 
 
@@ -205,14 +294,6 @@ window.addEventListener("load", () => {
     if (window.location.href.includes("accountEdit")) {
 
         let user = JSON.parse(localStorage.getItem("user"))
-        const editUsername = document.getElementById("editUsername")
-        const editEmail = document.getElementById("editEmail")
-        const editPhone = document.getElementById("editPhone")
-        const editLocation = document.getElementById("editLocation")
-        const editBirthday = document.getElementById("editBirthday")
-        const editBio = document.getElementById("editBio")
-        const imageLink = document.getElementById("imageLink")
-
         imageLink.value = user.info[4]
         editUsername.value = user.username
         editEmail.value = user.email
