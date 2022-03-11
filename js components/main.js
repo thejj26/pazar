@@ -232,6 +232,7 @@ function UpdateUserInfo() {
                 database.collection("users").doc(userId).update({
                     username: editUsername.value,
                     email: editEmail.value,
+                    password: newPassword.value,
                     info: [
                         editPhone.value,
                         editLocation.value,
