@@ -301,5 +301,6 @@ window.addEventListener("load", () => {
         editLocation.value = user.info[1]
         editBirthday.value = user.info[2]
         editBio.value = user.info[3]
+        document.getElementById("logo").src = user.info[4]
     }
 })

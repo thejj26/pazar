@@ -92,8 +92,9 @@ main div div p {
     width: 10em !important;
     height: 10em !important;
     border-radius: 100%;
-    border: 1px solid #868686;
+    aspect-ratio: 1 !important;
     margin: 3em;
+    margin-top: 0 !important;
 }
 
 .user-info p {
