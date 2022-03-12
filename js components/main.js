@@ -36,6 +36,56 @@ class User {
     }
 }
 
+//klasa za spremanje svih postova
+class Post {
+    constructor(category = "", date = "", description = "", image = "", owner = "", price = 0, priceSuffix = "", title = "") {
+        this.category = category
+        this.date = date
+        this.description = description
+        this.image = image
+        this.owner = owner
+        this.price = price
+        this.priceSuffix = priceSuffix
+        this.title = title
+    }
+    getOwner() {
+        database.collection("users").doc(this.owner).get().then(data => {
+            let owner = new User(data.data().username, "", data.data().email, [], data.data().info)
+            return owner
+        })
+    }
+    addPost() {
+        let owner = this.getOwner()
+        console.log(owner)
+        document.getElementById("posts").innerHtml += `
+        <div class="col s12 m6 l4 row" id="post${allPosts.indexOf(this)}">
+            <div class="col s10 m10 l10 offset-s1 offset-m1 offset-l1">
+                <img src="${this.image}" alt="${this.title}" class="materialboxed">
+                <p title>${this.title}</p>
+                <p description>${this.description}</p>
+                <p price>${this.price}/${this.priceSuffix}</p>
+                <p date>${this.date}</p>
+                <div owner>
+                    <p username>${owner.username}</p>
+                    <p phone>${owner.phone}</p>
+                    <p email>${owner.email}</p>
+                    <p location>${owner.info[1]}</p>
+                </div>
+            </div>
+        </div>
+        `
+    }
+}
+//funkcija za ucitavanje svih postova
+let allPosts = []
+
+function getPosts() {
+    database.collection("posts").get().then((data) => {
+        data.forEach((post) => {
+            allPosts.push(new Post(post.data().category, post.data().date, post.data().description, post.data().image, post.data().owner, post.data().price, post.data().priceSuffix, post.data().title))
+        })
+    })
+}
 //login
 function Login() {
     let tempUser = null
@@ -322,4 +372,6 @@ window.addEventListener("load", () => {
         editBio.value = user.info[3]
         document.getElementById("logo").src = user.info[4]
     }
+
+    //posts
 })
