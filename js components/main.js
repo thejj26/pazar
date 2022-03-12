@@ -48,28 +48,26 @@ class Post {
         this.priceSuffix = priceSuffix
         this.title = title
     }
-    getOwner() {
-        database.collection("users").doc(this.owner).get().then(data => {
-            let owner = new User(data.data().username, "", data.data().email, [], data.data().info)
-            return owner
-        })
+    async getOwner() {
+        let snapshot = await database.collection("users").doc(this.owner).get()
+        let data = snapshot.data()
+        return new User(data.username, "", data.email, [], data.info)
     }
     addPost() {
         let owner = this.getOwner()
-        console.log(owner)
-        document.getElementById("posts").innerHtml += `
+        document.getElementById("posts").innerHTML += `
         <div class="col s12 m6 l4 row" id="post${allPosts.indexOf(this)}">
             <div class="col s10 m10 l10 offset-s1 offset-m1 offset-l1">
                 <img src="${this.image}" alt="${this.title}" class="materialboxed">
                 <p title>${this.title}</p>
                 <p description>${this.description}</p>
-                <p price>${this.price}/${this.priceSuffix}</p>
+                <p price>${this.price}kn/${this.priceSuffix}</p>
                 <p date>${this.date}</p>
                 <div owner>
                     <p username>${owner.username}</p>
                     <p phone>${owner.phone}</p>
                     <p email>${owner.email}</p>
-                    <p location>${owner.info[1]}</p>
+                    <p location>${owner.info[0]}</p>
                 </div>
             </div>
         </div>
