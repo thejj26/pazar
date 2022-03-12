@@ -55,7 +55,16 @@ nav li {
 }
 
 .btn {
-    background: linear-gradient(to top right, #63c246, #60c940);
+    background: #6bd14c !important;
+    transition: 0.18s ease-in;
+    border: 2px solid white !important;
+    box-shadow: none !important;
+}
+
+.btn:hover {
+    color: #6bd14c !important;
+    background: white !important;
+    border: 2px solid #6bd14c !important;
 }
 
 .tabs .tab a {
@@ -121,10 +130,29 @@ main div div p {
     height: fit-content;
 }
 
-#editBtn i{
+#editBtn i {
     font-size: 2.7em;
 }
 
-.desc p{
-    font-size:1.7em;
+.desc p {
+    font-size: 1.7em;
+}
+
+.big-btn {
+    font-size: 1.5em !important;
+    width: max-content;
+    padding-top: 0.5em !important;
+    padding-bottom: 2em !important;
+    display: inline-block !important;
+    margin: 10vh;
+}
+
+.prefix {
+    color: #4c9436 !important;
+    transform: scaleX(-1);
+}
+
+.dropdown-trigger {
+    color: #727272;
+    font-size: 1.5em;
 }

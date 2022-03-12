@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Damion&family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <title>Pazar | Oglasi</title>
+</head>
+
+<body>
+    <!--navbar-->
+    <nav>
+        <div class="nav-wraper">
+            <a href="#" data-target="sidebar" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <a href="../html/index.html" class="brand-logo right">Pazar</a>
+            <!--navbar login/register-->
+            <ul class="left hide-on-med-and-down" id="accountLoginButtons">
+                <li id="navLogin"><a href="login.html">Prijava</a></li>
+                <li id="navAccount"><a href="account.html">Korisnički račun</a></li>
+                <li id="navLogout"><a href="" id="navLogout" onclick="Logout()">Odjava</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!--mobile sidebar-->
+    <div>
+        <!--sidebar login/register-->
+        <ul id="sidebar" class="sidenav">
+            <!--mobile login-->
+            <div id="sidebarLogin">
+                <li class="center-align">
+                    <p class="sidebarText bold">Niste prijavljeni</p>
+                </li>
+                <p class="sidebarText center-align">Trebate se prijaviti ili registrirati novi korisnički račun kako
+                    biste
+                    koristili ovu web-stranicu</p>
+                <div class="center-align">
+                    <a class="waves-effect waves-light btn" href="login.html">Prijavi se</a>
+                </div>
+            </div>
+            <div id="userVisible">
+                <!--account managment-->
+                <div id="sidebarAccount" class="center-align">
+                    <a class="waves-effect waves-light btn" href="account.html">Korisnički račun</a>
+                </div>
+                <!--logout-->
+                <div id="sidebarLogout" class="center-align">
+                    <a class="waves-effect waves-light btn" onclick="Logout()">Odjava</a>
+                </div>
+            </div>
+        </ul>
+    </div>
+    <!--sortiranje i filtriranje-->
+    <div class="row sort-filter-search">
+        <div class="col s12 m12 l12 search">
+            <div class="input-field">
+                <input id="search" type="search" placeholder="Pretraži">
+                <i class="material-icons prefix" id="confrimSearch">search</i>
+            </div>
+        </div>
+        <div class="col s6 m6 l6 sort input-field">
+            <select id="sort">
+                <option value="" disabled selected>Sortiraj po:</option>
+                <option value="price-lh">Jeftiniji prvi</option>
+                <option value="price-hl">Skuplji prvi</option>
+                <option value="age-lh">Noviji prvi</option>
+                <option value="age-hl">Stariji prvi</option>
+            </select>
+        </div>
+        <div class="col s6 m6 l6 filter input-field">
+            <select multiple id="filter">
+                <option value="" disabled selected>Filtriraj po:</option>
+                <optgroup label="Tipovi proizvoda">
+                    <option value="fruit" selected>Voćni proizvodi</option>
+                    <option value="vegetable" selected>Povrće i proizvodi od povrća</option>
+                    <option value="meat" selected>Mesni proizvodi</option>
+                    <option value="dairy" selected>Nemesni životinjski proizvodi</option>
+                    <option value="other" selected>Ostalo</option>
+                </optgroup>
+                <optgroup label="Cijena">
+                </optgroup>
+            </select>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-firestore-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="../js components/main.js"></script>
+</body>
+
+</html>

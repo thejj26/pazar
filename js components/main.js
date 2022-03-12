@@ -1,3 +1,15 @@
+//materialize
+M.AutoInit()
+
+let elem = document.querySelector(".sidenav")
+let instance = new M.Sidenav(elem)
+
+if (window.location.href.includes("posts.html")) {
+    let elems = document.querySelectorAll('select')
+    let instances = M.FormSelect.init(elems)
+    let filterBy = instances[1]
+}
+
 //firebase
 const firebaseConfig = {
     apiKey: "AIzaSyD2GC10JQEjDIZ3SrpGXBE1PbQTxpTv830",
@@ -48,12 +60,11 @@ function Login() {
 
 function Register() {
     //detekcija praznih polja
-    let canBeRegistered = true
     const username = document.getElementById("registerUsername")
     const password = document.getElementById("registerPassword")
     const confirmPassword = document.getElementById("confirmPassword")
     const email = document.getElementById("email")
-
+    let canBeRegistered = true
     switch ("") {
         case username.value:
             alert("Korisničko ime je obavezno")
@@ -74,6 +85,13 @@ function Register() {
         canBeRegistered = false
         return
     }
+    //provjera minimalne duzine lozinke
+    if (password.value.length < 6) {
+        alert("Lozinka mora imati minimalno 6 znakova")
+        canBeRegistered = false
+        return
+    }
+
     //provjera korisnickog imena i emaila
     database.collection("users").get().then((data) => {
         data.forEach((user) => {
@@ -89,19 +107,19 @@ function Register() {
         })
         addUser(canBeRegistered)
     })
-    //dadavanje novog korisnika
-    function addUser(bool) {
-        if (bool) {
-            database.collection("users").add({
-                username: username.value,
-                password: password.value,
-                email: email.value,
-                posts: ["Nije uneseno", "Nije uneseno", "Nije uneseno", "Nije uneseno", "https://i.imgur.com/UhE3TDY.png"],
-                info: []
-            })
-            new User(username.value, password.value, email.value, [], []).store()
-            window.location.href = "../html/index.html"
-        }
+}
+//dadavanje novog korisnika
+function addUser(bool) {
+    if (bool) {
+        database.collection("users").add({
+            username: username.value,
+            password: password.value,
+            email: email.value,
+            info: ["Nije uneseno", "Nije uneseno", "Nije uneseno", "Nije uneseno", "https://i.imgur.com/UhE3TDY.png"],
+            posts: []
+        })
+        new User(username.value, password.value, email.value, [], []).store()
+        window.location.href = "../html/index.html"
     }
 }
 //logout
