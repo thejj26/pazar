@@ -57,36 +57,80 @@
         </ul>
     </div>
     <!--sortiranje i filtriranje-->
-    <div class="row sort-filter-search">
+    <div class="row center-align">
         <div class="col s12 m12 l12 search">
             <div class="input-field">
                 <input id="search" type="search" placeholder="Pretraži">
-                <i class="material-icons prefix" id="confrimSearch">search</i>
+                <i class="material-icons prefix">search</i>
             </div>
         </div>
-        <div class="col s6 m6 l6 sort input-field">
-            <select id="sort">
-                <option value="" disabled selected>Sortiraj po:</option>
-                <option value="price-lh">Jeftiniji prvi</option>
-                <option value="price-hl">Skuplji prvi</option>
-                <option value="age-lh">Noviji prvi</option>
-                <option value="age-hl">Stariji prvi</option>
-            </select>
-        </div>
-        <div class="col s6 m6 l6 filter input-field">
-            <select multiple id="filter">
-                <option value="" disabled selected>Filtriraj po:</option>
-                <optgroup label="Tipovi proizvoda">
-                    <option value="fruit" selected>Voćni proizvodi</option>
-                    <option value="vegetable" selected>Povrće i proizvodi od povrća</option>
-                    <option value="meat" selected>Mesni proizvodi</option>
-                    <option value="dairy" selected>Nemesni životinjski proizvodi</option>
-                    <option value="other" selected>Ostalo</option>
-                </optgroup>
-                <optgroup label="Cijena">
-                </optgroup>
-            </select>
-        </div>
+        <ul class="collapsible">
+            <li>
+                <div class="collapsible-header">Sortiraj</div>
+                <div class="collapsible-body left-align"><span>
+                        <p>
+                            <label>
+                                <input type="radio" class="with-gap" id="price-lh" name="sort" checked>
+                                <span>Cijena - uzlazno</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="radio" class="with-gap" id="price-hl" name="sort">
+                                <span>Cijena - silazno</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="radio" class="with-gap" id="date-lh" name="sort">
+                                <span>Datum obajve - uzlazno</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="radio" class="with-gap" id="date-hl" name="sort">
+                                <span>Datum objave - silazno</span>
+                            </label>
+                        </p>
+                    </span></div>
+            </li>
+            <li>
+                <div class="collapsible-header">Filtriraj</div>
+                <div class="collapsible-body left-align"><span>
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" id="fruit">
+                                <span>Voće i voćni proizvodi</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" id="vegetables">
+                                <span>Povrće i povrtni proizvodi</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" id="meat">
+                                <span>Meso i mesni proizvodi</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" id="nonMeat">
+                                <span>Nemesni proizvodi životinjskog podrijetla</span>
+                            </label>
+                        </p>
+                        <p>
+                            <label>
+                                <input type="checkbox" class="filled-in" id="other">
+                                <span>Ostalo</span>
+                            </label>
+                        </p>
+                    </span></div>
+            </li>
+        </ul>
+        <a class="waves-effect waves-light btn">Primjeni</a>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-app-compat.js"></script>

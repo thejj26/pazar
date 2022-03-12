@@ -55,7 +55,7 @@ nav li {
 }
 
 .btn {
-    background: #6bd14c !important;
+    background: #6bd14c!important;
     transition: 0.18s ease-in;
     border: 2px solid white !important;
     box-shadow: none !important;
@@ -152,7 +152,16 @@ main div div p {
     transform: scaleX(-1);
 }
 
-.dropdown-trigger {
-    color: #727272;
-    font-size: 1.5em;
+.collapsible-body span p label span{
+    color: #727272 !important;
+    font-size: 1.4em !important;
+}
+
+.collapsible-header{
+    color:#488f32 !important;
+    font-size:1.6em;
+}
+
+.collapsible{
+    box-shadow: none !important;
 }
