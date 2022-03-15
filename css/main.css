@@ -175,6 +175,7 @@ img[post-img] {
     background: linear-gradient(to top left, #2b611b, #9fe789) fixed;
     color:white;
     border-radius: .275em;
+    transition: .15s ease-in;
 }
 
 p[title]{
@@ -199,8 +200,8 @@ a>[owner]{
 [owner-img]{
     width:100%;
     border-radius: 100%;
-    transition: .15s ease-in-out;
+    transition: .15s ease-in;
 }
 a>[owner]:hover div>[owner-img]{
-    width: 120%;
+    width: 110%;
 }
