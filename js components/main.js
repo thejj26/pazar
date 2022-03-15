@@ -49,26 +49,29 @@ class Post {
         this.title = title
     }
     async getOwner() {
-        let snapshot = await database.collection("users").doc(this.owner).get()
-        let data = snapshot.data()
-        return new User(data.username, "", data.email, [], data.info)
+        let owner = await database.collection("users").doc(this.owner).get()
+        return new User(owner.data().username, "", owner.data().email, [], owner.data().info)
     }
-    addPost() {
-        let owner = this.getOwner()
+    async addPost() {
+        let owner = await this.getOwner()
         document.getElementById("posts").innerHTML += `
-        <div class="col s12 m6 l4 row" id="post${allPosts.indexOf(this)}">
-            <div class="col s10 m10 l10 offset-s1 offset-m1 offset-l1">
-                <img src="${this.image}" alt="${this.title}" class="materialboxed">
+        <div class="col s12 m6 l4 row">
+            <div class="col s10 m10 l0 offset-s1 offset-m1 offset-l1 post hoverable" id="post${allPosts.indexOf(this)}">
                 <p title>${this.title}</p>
+                <img src="${this.image}" alt="${this.title}" post-img>
                 <p description>${this.description}</p>
-                <p price>${this.price}kn/${this.priceSuffix}</p>
-                <p date>${this.date}</p>
-                <div owner>
-                    <p username>${owner.username}</p>
-                    <p phone>${owner.phone}</p>
-                    <p email>${owner.email}</p>
-                    <p location>${owner.info[0]}</p>
-                </div>
+                <p price>Cijena: ${this.price}kn/${this.priceSuffix}</p>
+                <p date>Objavljeno: ${this.date}</p>
+                <p location>Lokacija: ${owner.info[1]}</p>
+                <hr>
+                <a href="">
+                    <span owner>
+                        <p username>${owner.username}</p>
+                        <br>
+                        <p phone>${owner.info[0]}</p>
+                        <p email>${owner.email}</p>
+                    </span>
+                </a>
             </div>
         </div>
         `
@@ -78,10 +81,13 @@ class Post {
 let allPosts = []
 
 function getPosts() {
+    allPosts = []
     database.collection("posts").get().then((data) => {
         data.forEach((post) => {
             allPosts.push(new Post(post.data().category, post.data().date, post.data().description, post.data().image, post.data().owner, post.data().price, post.data().priceSuffix, post.data().title))
         })
+    }).then(() => {
+        allPosts.forEach(post => post.addPost())
     })
 }
 //login
@@ -370,6 +376,8 @@ window.addEventListener("load", () => {
         editBio.value = user.info[3]
         document.getElementById("logo").src = user.info[4]
     }
-
     //posts
+    if (window.location.href.includes("posts.html")) {
+        getPosts()
+    }
 })

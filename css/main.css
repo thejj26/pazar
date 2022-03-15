@@ -55,7 +55,7 @@ nav li {
 }
 
 .btn {
-    background: #6bd14c!important;
+    background: #6bd14c !important;
     transition: 0.18s ease-in;
     border: 2px solid white !important;
     box-shadow: none !important;
@@ -152,16 +152,46 @@ main div div p {
     transform: scaleX(-1);
 }
 
-.collapsible-body span p label span{
+.collapsible-body span p label span {
     color: #727272 !important;
     font-size: 1.4em !important;
 }
 
-.collapsible-header{
-    color:#488f32 !important;
-    font-size:1.6em;
+.collapsible-header {
+    color: #488f32 !important;
+    font-size: 1.6em;
 }
 
-.collapsible{
+.collapsible {
     box-shadow: none !important;
+}
+
+img[post-img] {
+    width: 95% !important;
+    border-radius: .6rem;
+}
+
+.post {
+    background: linear-gradient(to top left, #2b611b, #9fe789) fixed;
+    color:white;
+    border-radius: .275em;
+}
+
+p[title]{
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+p[phone], p[email]{
+    display: inline !important;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+[owner] p{
+    display: inline-block;
+}
+
+a>[owner]{
+    color:white;
 }
