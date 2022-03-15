@@ -199,4 +199,8 @@ a>[owner]{
 [owner-img]{
     width:100%;
     border-radius: 100%;
+    transition: .15s ease-in-out;
+}
+a>[owner]:hover div>[owner-img]{
+    width: 120%;
 }
