@@ -56,7 +56,7 @@ class Post {
         let owner = await this.getOwner()
         document.getElementById("posts").innerHTML += `
         <div class="col s12 m6 l4 row">
-            <div class="col s10 m10 l0 offset-s1 offset-m1 offset-l1 post hoverable" id="post${allPosts.indexOf(this)}">
+            <div class="row col s10 m10 l0 offset-s1 offset-m1 offset-l1 post hoverable" id="post${allPosts.indexOf(this)}">
                 <p title>${this.title}</p>
                 <img src="${this.image}" alt="${this.title}" post-img>
                 <p description>${this.description}</p>
@@ -65,12 +65,17 @@ class Post {
                 <p location>Lokacija: ${owner.info[1]}</p>
                 <hr>
                 <a href="">
-                    <span owner>
-                        <p username>${owner.username}</p>
-                        <br>
-                        <p phone>${owner.info[0]}</p>
-                        <p email>${owner.email}</p>
-                    </span>
+                    <div owner>
+                        <div class="col s3 m3 l3 center-align">
+                        <img src="${owner.info[4]}" alt="${owner.username}" owner-img>
+                        </div>
+                        <div class="col s9 m9 l9 center-align">
+                            <p username>${owner.username}</p>
+                            <br>
+                            <p phone>${owner.info[0]}</p>
+                            <p email>${owner.email}</p>
+                        </div>
+                    </div>
                 </a>
             </div>
         </div>
