@@ -326,6 +326,43 @@ function UpdateUserInfo() {
 
 }
 
+function Sort_Filter() {
+    function Sort() {
+        switch (true) {
+            case (document.getElementById("price-lh").checked):
+                allPosts.sort((a, b) => a.price > b.price ? 1 : -1)
+                break;
+            case (document.getElementById("price-hl").checked):
+                allPosts.sort((a, b) => a.price < b.price ? 1 : -1)
+                break;
+            case (document.getElementById("date-lh").checked):
+                //todo
+                break;
+            case (document.getElementById("date-hl").checked):
+                //todo
+                break;
+        }
+    }
+
+    function Filter() {
+        let filters = [document.getElementById("fruit").checked ? "fruit" : null,
+            document.getElementById("vegetables").checked ? "vegetables" : null,
+            document.getElementById("meat").checked ? "meat" : null,
+            document.getElementById("nonMeat").checked ? "nonMeat" : null,
+            document.getElementById("other").checked ? "other" : null
+        ].filter(x => x != null)
+
+        let search = document.getElementById("search").value
+        let price = [document.getElementById("min").value, document.getElementById("max").value]
+        //todo
+    }
+    Filter()
+    Sort()
+    document.getElementById("posts").innerHTML = ""
+    allPosts.forEach(post => {
+        post.addPost()
+    })
+}
 
 //DOM user managment
 if (document.location.href.includes("login.html")) { //dodaje eventove buttonima
