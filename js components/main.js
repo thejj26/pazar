@@ -350,20 +350,24 @@ function Sort_Filter() {
         document.getElementById("other").checked ? "other" : null
     ].filter(x => x != null)
 
-    let search = document.getElementById("search").value
+    let search = document.getElementById("search")
     //let price = [document.getElementById("min").value, document.getElementById("max").value]
-    allPosts.filter(x =>
-        filters.length > 0 ||
-        filters.includes(x.category) ||
-        (x.title.toLowerCase().includes(search.toLowerCase()) && search != "") ||
-        (x.description.toLowerCase().includes(search.toLowerCase()) && search != "")
-        /* ||
-                    x.price >= price[0] && x.price <= price[1] ||*/
-    )
+    
+    let filtered = allPosts
+        //filter po imenu/opisu
+        .filter(post => {
+            (post.title.includes(search.value) || post.description.includes(search.value))
+        })
+        //filter po katrgoriji
+        .filter(post => {
+            filters.includes(post.category) || filters.length == 0
+        })
+
     document.getElementById("posts").innerHTML = ""
-    allPosts.forEach(post => {
+    filtered.forEach(post => {
         post.addPost()
     })
+
 }
 
 //DOM user managment
