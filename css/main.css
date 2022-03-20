@@ -173,35 +173,45 @@ img[post-img] {
 
 .post {
     background: linear-gradient(to top left, #2b611b, #9fe789) fixed;
-    color:white;
+    color: white;
     border-radius: .275em;
     transition: .15s ease-in;
 }
 
-p[title]{
+p[title] {
     font-size: 1.2em;
     font-weight: 600;
 }
 
-p[phone], p[email]{
+p[phone],
+p[email] {
     display: inline !important;
     margin-left: 1em;
     margin-right: 1em;
 }
 
-[owner] p{
+[owner] p {
     display: inline-block;
 }
 
-a>[owner]{
-    color:white;
+a>[owner] {
+    color: white;
 }
 
-[owner-img]{
-    width:100%;
-    border-radius: 100%;
-    transition: .15s ease-in;
-}
-a>[owner]:hover div>[owner-img]{
+[owner-img] {
     width: 110%;
+    border-radius: 100%;
+    transition: .1s ease-in;
+    opacity: .9;
+    filter: grayscale(.3);
+}
+
+[owner]:hover [owner-img] {
+    opacity: 1;
+    filter: grayscale(0);
+}
+
+[search-label] {
+    color: #488f32 !important;
+    font-size: 1.4em;
 }

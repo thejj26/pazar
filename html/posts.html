@@ -58,12 +58,6 @@
     </div>
     <!--sortiranje i filtriranje-->
     <div class="row center-align">
-        <div class="col s12 m12 l12 search">
-            <div class="input-field">
-                <input id="search" type="search" placeholder="Pretraži">
-                <i class="material-icons prefix">search</i>
-            </div>
-        </div>
         <ul class="collapsible">
             <li>
                 <div class="collapsible-header">Sortiraj</div>
@@ -128,6 +122,19 @@
                             </label>
                         </p>
                     </span></div>
+            </li>
+            <li>
+                <div class="collapsible-header">Pretraži</div>
+                <div class="collapsible-body">
+                    <div class="input-field">
+                        <p search-label class="left-align">Pretraži po imenu ili opisu</p>
+                        <input id="search" type="search">
+                    </div>
+                    <div class="input-field">
+                        <p search-label class="left-align">Pretraži po lokaciji prodavača</p>
+                        <input id="locationSearch" type="search">
+                    </div>
+                </div>
             </li>
         </ul>
         <a class="waves-effect waves-light btn" onclick="Sort_Filter()">Primjeni</a>

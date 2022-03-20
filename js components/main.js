@@ -351,23 +351,30 @@ function Sort_Filter() {
     ].filter(x => x != null)
 
     let search = document.getElementById("search")
-    //let price = [document.getElementById("min").value, document.getElementById("max").value]
-    
+    let location = document.getElementById("locationSearch")
+
+    function FormatSearch() {
+        return search.value.toLowerCase().replace("č", "c").replace("ć", "c").replace("š", "s").replace("ž", "z")
+    }
+
+    function FormatLocation() {
+        return location.value.toLowerCase().replace("č", "c").replace("ć", "c").replace("š", "s").replace("ž", "z")
+    }
     let filtered = allPosts
         //filter po imenu/opisu
-        .filter(post => {
-            (post.title.includes(search.value) || post.description.includes(search.value))
+        .filter(post => post.title.includes(FormatSearch()) || post.description.includes(FormatSearch()))
+        //filter po kategoriji
+        .filter(post => filters.includes(post.category) || filters.length == 0)
+        //filter po lokaciji
+        .filter(post => async function(){
+            let owner = await post.getOwner()
+            return Boolean(owner.info[1].includes(FormatLocation()) || FormatLocation() == "")
         })
-        //filter po katrgoriji
-        .filter(post => {
-            filters.includes(post.category) || filters.length == 0
-        })
-
+    
     document.getElementById("posts").innerHTML = ""
     filtered.forEach(post => {
         post.addPost()
     })
-
 }
 
 //DOM user managment
