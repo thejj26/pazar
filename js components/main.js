@@ -326,7 +326,7 @@ function UpdateUserInfo() {
 
 }
 
-function Sort_Filter() {
+async function Sort_Filter() {
     //sort
     switch (true) {
         case (document.getElementById("price-lh").checked):
@@ -365,12 +365,15 @@ function Sort_Filter() {
         .filter(post => post.title.includes(FormatSearch()) || post.description.includes(FormatSearch()))
         //filter po kategoriji
         .filter(post => filters.includes(post.category) || filters.length == 0)
-        //filter po lokaciji
-        .filter(post => async function(){
-            let owner = await post.getOwner()
-            return Boolean(owner.info[1].includes(FormatLocation()) || FormatLocation() == "")
-        })
-    
+    //filter po lokaciji
+    for (let i = 0; i < filtered.length; i++) {
+        let owner = await filtered[i].getOwner()
+        if (!(owner.info[1].includes(FormatLocation()) || FormatLocation() == "")) {
+            filtered.splice(i, 1)
+            i--
+        }
+    }
+    //primjena filtera u HTML
     document.getElementById("posts").innerHTML = ""
     filtered.forEach(post => {
         post.addPost()
