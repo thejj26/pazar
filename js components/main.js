@@ -368,7 +368,8 @@ async function Sort_Filter() {
     //filter po lokaciji
     for (let i = 0; i < filtered.length; i++) {
         let owner = await filtered[i].getOwner()
-        if (!(owner.info[1].includes(FormatLocation()) || FormatLocation() == "")) {
+        if (!(owner.info[1].toLowerCase().includes(FormatLocation()) || FormatLocation() == "")) {
+            console.log(`${owner.info[1]}!=${FormatLocation()}`)
             filtered.splice(i, 1)
             i--
         }
