@@ -353,23 +353,19 @@ async function Sort_Filter() {
     let search = document.getElementById("search")
     let location = document.getElementById("locationSearch")
 
-    function FormatSearch() {
-        return search.value.toLowerCase().replace("č", "c").replace("ć", "c").replace("š", "s").replace("ž", "z")
+    function FormatText(text) {
+        return text.toLowerCase().replace("č", "c").replace("ć", "c").replace("š", "s").replace("ž", "z")
     }
 
-    function FormatLocation() {
-        return location.value.toLowerCase().replace("č", "c").replace("ć", "c").replace("š", "s").replace("ž", "z")
-    }
     let filtered = allPosts
         //filter po imenu/opisu
-        .filter(post => post.title.includes(FormatSearch()) || post.description.includes(FormatSearch()))
+        .filter(post => post.title.includes(FormatText(search.value)) || post.description.includes(FormatText(search.value)))
         //filter po kategoriji
         .filter(post => filters.includes(post.category) || filters.length == 0)
     //filter po lokaciji
     for (let i = 0; i < filtered.length; i++) {
         let owner = await filtered[i].getOwner()
-        if (!(owner.info[1].toLowerCase().includes(FormatLocation()) || FormatLocation() == "")) {
-            console.log(`${owner.info[1]}!=${FormatLocation()}`)
+        if (!(FormatText(owner.info[1]).includes(FormatText(location.value)) || FormatText(location.value) == "")) {
             filtered.splice(i, 1)
             i--
         }
