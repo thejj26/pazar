@@ -124,10 +124,12 @@ main div div p {
 }
 
 #editBtn {
-    color: #488f32;
+    color: #488f32 !important;
     background: none;
     box-shadow: none;
     height: fit-content;
+    background: none !important;
+    border: none !important;
 }
 
 #editBtn i {
@@ -173,7 +175,7 @@ img[post-img] {
 
 .post {
     background: linear-gradient(to top left, #2b611b, #9fe789) fixed;
-    color: white;
+    color: white !important;
     border-radius: .275em;
     transition: .15s ease-in;
 }
@@ -181,6 +183,11 @@ img[post-img] {
 p[title] {
     font-size: 1.2em;
     font-weight: 600;
+    color: white !important;
+}
+
+p[description], p[price], p[date], p[location] {
+    color: white !important;
 }
 
 p[phone],
@@ -188,10 +195,12 @@ p[email] {
     display: inline !important;
     margin-left: 1em;
     margin-right: 1em;
+    color: white !important;
 }
 
 [owner] p {
     display: inline-block;
+    color: white !important;
 }
 
 a>[owner] {

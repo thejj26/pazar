@@ -1,15 +1,6 @@
 //materialize
 M.AutoInit()
 
-let elem = document.querySelector(".sidenav")
-let instance = new M.Sidenav(elem)
-
-if (window.location.href.includes("posts.html")) {
-    let elems = document.querySelectorAll('select')
-    let instances = M.FormSelect.init(elems)
-    let filterBy = instances[1]
-}
-
 //firebase
 const firebaseConfig = {
     apiKey: "AIzaSyD2GC10JQEjDIZ3SrpGXBE1PbQTxpTv830",
@@ -34,6 +25,12 @@ class User {
     store() {
         localStorage.setItem("user", JSON.stringify(this))
     }
+    async getAllPosts() {
+        let users = await database.collection("users").where("username", "==", this.username).get()
+        let userid = users.docs[0].id
+        let posts = await database.collection("posts").where("owner", "==", userid).get()
+        return posts.docs
+    }
 }
 
 //klasa za spremanje svih postova
@@ -54,7 +51,8 @@ class Post {
     }
     async addPost() {
         let owner = await this.getOwner()
-        document.getElementById("posts").innerHTML += `
+        if (window.location.href.includes("posts.html")) {
+            document.getElementById("posts").innerHTML += `
         <div class="col s12 m6 l4 row">
             <div class="row col s10 m10 l0 offset-s1 offset-m1 offset-l1 post hoverable" id="post${allPosts.indexOf(this)}">
                 <p title>${this.title}</p>
@@ -64,7 +62,7 @@ class Post {
                 <p date>Objavljeno: ${this.date}</p>
                 <p location>Lokacija: ${owner.info[1]}</p>
                 <hr>
-                <a href="">
+                <a href="../html/profile.html#user=${owner.username}">
                     <div owner>
                         <div class="col s3 m3 l3 center-align">
                         <img src="${owner.info[4]}" alt="${owner.username}" owner-img>
@@ -78,8 +76,20 @@ class Post {
                     </div>
                 </a>
             </div>
-        </div>
-        `
+        </div>`
+        } else {
+            document.getElementById("posts").innerHTML += `
+        <div class="col s12 m6 l4 row">
+            <div class="row col s10 m10 l0 offset-s1 offset-m1 offset-l1 post hoverable" id="post${allPosts.indexOf(this)}">
+                <p title>${this.title}</p>
+                <img src="${this.image}" alt="${this.title}" post-img>
+                <p description>${this.description}</p>
+                <p price>Cijena: ${this.price}kn/${this.priceSuffix}</p>
+                <p date>Objavljeno: ${this.date}</p>
+                <p location>Lokacija: ${owner.info[1]}</p>
+            </div>
+        </div>`
+        }
     }
 }
 //funkcija za ucitavanje svih postova
@@ -95,6 +105,7 @@ function getPosts() {
         allPosts.forEach(post => post.addPost())
     })
 }
+
 //login
 function Login() {
     let tempUser = null
@@ -328,18 +339,24 @@ function UpdateUserInfo() {
 
 async function Sort_Filter() {
     //sort
+    let sort = ""
+    let filter = ""
     switch (true) {
         case (document.getElementById("price-lh").checked):
             allPosts.sort((a, b) => a.price > b.price ? 1 : -1)
+            sort = "price-lh"
             break;
         case (document.getElementById("price-hl").checked):
             allPosts.sort((a, b) => a.price < b.price ? 1 : -1)
+            sort = "price-hl"
             break;
         case (document.getElementById("date-lh").checked):
             //todo
+            sort = "date-lh"
             break;
         case (document.getElementById("date-hl").checked):
             //todo
+            sort = "date-hl"
             break;
     }
     //filter
@@ -375,6 +392,10 @@ async function Sort_Filter() {
     filtered.forEach(post => {
         post.addPost()
     })
+    if (filters.length > 0) {
+        filter = filters.join("&")
+    }
+    window.location.href = `../html/posts.html#sort=${sort} filter=${filter} search=${search.value} location=${location.value}`
 }
 
 //DOM user managment
@@ -398,25 +419,31 @@ window.addEventListener("load", () => {
 
     //popunjavanje korisnickih podataka
     if (window.location.href.includes("account.html")) {
-        let user = JSON.parse(localStorage.getItem("user"))
-        document.getElementById("username").innerHTML = user.username
-        document.getElementById("email").innerHTML = user.email
-        document.getElementById("password").innerHTML = user.password.replace(/./g, "*")
-        if (user.info[0]) {
+        //popunjavanje podataka
+        async function localUser() {
+            let getuser = JSON.parse(localStorage.getItem("user"))
+            let user = new User(getuser.username, getuser.password, getuser.email, getuser.posts, getuser.info)
+            return user
+        }
+        async function fillInfo() {
+            let user = await localUser()
+            document.getElementById("username").innerHTML = user.username
+            document.getElementById("email").innerHTML = user.email
+            document.getElementById("password").innerHTML = user.password.replace(/./g, "*")
             document.getElementById("phone").innerHTML = user.info[0]
-        }
-        if (user.info[1]) {
             document.getElementById("location").innerHTML = user.info[1]
-        }
-        if (user.info[2]) {
             document.getElementById("birthday").innerHTML = user.info[2]
-        }
-        if (user.info[3]) {
             document.getElementById("bio").innerHTML = user.info[3]
-        }
-        if (user.info[4]) {
             document.getElementById("logo").src = user.info[4]
+            //objave
+            let get = await user.getAllPosts()
+            let posts = []
+            get.forEach(post => posts.push(
+                new Post(post.data().category, post.data().date, post.data().description, post.data().image, post.data().owner, post.data().price, post.data().priceSuffix, post.data().title)
+            ))
+            posts.forEach(post => post.addPost())
         }
+        fillInfo()
     }
     //popunjavanje korisnickih podataka za accountEdit
     if (window.location.href.includes("accountEdit")) {
@@ -434,5 +461,32 @@ window.addEventListener("load", () => {
     //posts
     if (window.location.href.includes("posts.html")) {
         getPosts()
+    }
+
+    if (window.location.href.includes("profile.html")) {
+        //dohvacanje podataka
+        var userProfile
+        database.collection("users").where("username", "==", window.location.href.split("#user=")[1]).get().then(data => {
+            data.forEach(user => {
+                userProfile = new User(user.data().username, "", user.data().email, [], user.data().info)
+            })
+        }).then(async () => {
+            //popunjavanje podataka
+            document.querySelector("title").innerHTML = `Pazar | ${userProfile.username}`
+            document.getElementById("username").innerHTML = userProfile.username
+            document.getElementById("email").innerHTML = userProfile.email
+            document.getElementById("phone").innerHTML = userProfile.info[0] ? userProfile.info[0] : "Nije uneseno"
+            document.getElementById("location").innerHTML = userProfile.info[1] ? userProfile.info[1] : "Nije uneseno"
+            document.getElementById("birthday").innerHTML = userProfile.info[2] ? userProfile.info[2] : "Nije uneseno"
+            document.getElementById("bio").innerHTML = userProfile.info[3] ? userProfile.info[3] : "Nije uneseno"
+            document.getElementById("logo").src = userProfile.info[4]
+            //objave korisnika
+            let get = await userProfile.getAllPosts()
+            let posts = []
+            get.forEach(post => posts.push(
+                new Post(post.data().category, post.data().date, post.data().description, post.data().image, post.data().owner, post.data().price, post.data().priceSuffix, post.data().title)
+            ))
+            posts.forEach(post => post.addPost())
+        })
     }
 })
