@@ -35,7 +35,7 @@ class User {
 
 //klasa za spremanje svih postova
 class Post {
-    constructor(category = "", date = "", description = "", image = "", owner = "", price = 0, priceSuffix = "", title = "") {
+    constructor(category = "", date = "", description = "", image = "", owner = "", price = 0, priceSuffix = "", title = "", id = 0) {
         this.category = category
         this.date = date
         this.description = description
@@ -44,6 +44,7 @@ class Post {
         this.price = price
         this.priceSuffix = priceSuffix
         this.title = title
+        this.id = id
     }
     async getOwner() {
         let owner = await database.collection("users").doc(this.owner).get()
@@ -54,7 +55,7 @@ class Post {
         if (window.location.href.includes("posts.html")) {
             document.getElementById("posts").innerHTML += `
         <div class="col s12 m6 l4 row">
-            <div class="row col s10 m10 l0 offset-s1 offset-m1 offset-l1 post hoverable" id="post${allPosts.indexOf(this)}">
+            <div class="row col s10 m10 l0 offset-s1 offset-m1 offset-l1 post hoverable" id="post${this.id}">
                 <p title>${this.title}</p>
                 <img src="${this.image}" alt="${this.title}" post-img>
                 <p description>${this.description}</p>
@@ -77,10 +78,10 @@ class Post {
                 </a>
             </div>
         </div>`
-        } else {
+        } else if (window.location.href.includes("profile.html")) {
             document.getElementById("posts").innerHTML += `
         <div class="col s12 m6 l4 row">
-            <div class="row col s10 m10 l0 offset-s1 offset-m1 offset-l1 post hoverable" id="post${allPosts.indexOf(this)}">
+            <div class="row col s10 m10 l0 offset-s1 offset-m1 offset-l1 post hoverable" id="post${this.id}">
                 <p title>${this.title}</p>
                 <img src="${this.image}" alt="${this.title}" post-img>
                 <p description>${this.description}</p>
@@ -89,17 +90,47 @@ class Post {
                 <p location>Lokacija: ${owner.info[1]}</p>
             </div>
         </div>`
+        } else {
+            userPosts.push(this)
+            document.getElementById("posts").innerHTML += `
+            <div class="col s12 m6 l4 row">
+                <div class="row col s10 m10 l0 offset-s1 offset-m1 offset-l1 post hoverable" id="post${this.id}">
+                    <p title>${this.title}</p>
+                    <img src="${this.image}" alt="${this.title}" post-img>
+                    <p description>${this.description}</p>
+                    <p price>Cijena: ${this.price}kn/${this.priceSuffix}</p>
+                    <p date>Objavljeno: ${this.date}</p>
+                    <p location>Lokacija: ${owner.info[1]}</p>
+                    <hr>
+                    <a class="waves-effect waves-light btn delete" onclick="callDeletePost(this.id)">IZBRIŠI</a>
+                </div>
+            </div>`
+        }
+    }
+    deletePost() {
+        if (confirm("Ukoliko izbriše ovaj oglas on će nestati te ga nećete moći vratiti.\n Želite li nastaviti?")) {
+            database.collection("posts").where("id", "==", String(this.id)).get().then(data => {
+                data.forEach(doc => {
+                    doc.ref.delete()
+                    
+                })
+            }).then(console.log("izrbisano"))
         }
     }
 }
+
+function callDeletePost(id) {
+    userPosts.find(post => post.id == id).deletePost()
+}
 //funkcija za ucitavanje svih postova
 let allPosts = []
+let userPosts = []
 
 function getPosts() {
     allPosts = []
     database.collection("posts").get().then((data) => {
         data.forEach((post) => {
-            allPosts.push(new Post(post.data().category, post.data().date, post.data().description, post.data().image, post.data().owner, post.data().price, post.data().priceSuffix, post.data().title))
+            allPosts.push(new Post(post.data().category, post.data().date, post.data().description, post.data().image, post.data().owner, post.data().price, post.data().priceSuffix, post.data().title, post.data().id))
         })
     }).then(() => {
         allPosts.forEach(post => post.addPost())
@@ -484,8 +515,7 @@ window.addEventListener("load", () => {
             let get = await userProfile.getAllPosts()
             let posts = []
             get.forEach(post => posts.push(
-                new Post(post.data().category, post.data().date, post.data().description, post.data().image, post.data().owner, post.data().price, post.data().priceSuffix, post.data().title)
-            ))
+                new Post(post.data().category, post.data().date, post.data().description, post.data().image, post.data().owner, post.data().price, post.data().priceSuffix, post.data().title)))
             posts.forEach(post => post.addPost())
         })
     }

@@ -186,7 +186,10 @@ p[title] {
     color: white !important;
 }
 
-p[description], p[price], p[date], p[location] {
+p[description],
+p[price],
+p[date],
+p[location] {
     color: white !important;
 }
 
@@ -223,4 +226,18 @@ a>[owner] {
 [search-label] {
     color: #488f32 !important;
     font-size: 1.4em;
+}
+
+.delete {
+    margin-bottom: 1em;
+    background: #fff !important;
+    color: crimson !important;
+    border-color: crimson !important;
+}
+
+
+.delete:hover {
+    color: #fff !important;
+    background: crimson !important;
+    border-color: crimson !important;
 }
