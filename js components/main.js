@@ -15,11 +15,10 @@ let database = app.firestore()
 
 //klasa za spremanje local usera
 class User {
-    constructor(username = "", password = "", email = "", posts = [], info = []) {
+    constructor(username = "", password = "", email = "", info = []) {
         this.username = username
         this.password = password
         this.email = email
-        this.posts = posts
         this.info = info
     }
     store() {
@@ -124,7 +123,7 @@ function callDeletePost(id) {
 }
 //funkcija za ucitavanje svih postova
 let allPosts = []
-let userPosts = []
+let userPosts = []  //svi postovi jednog usera, koristi se za brisanje postova
 
 function getPosts() {
     allPosts = []
@@ -147,7 +146,7 @@ function Login() {
         data.forEach((user) => {
             //spremanje korisnika u local storage
             tempUser = user.data()
-            new User(user.data().username, user.data().password, user.data().email, user.data().posts, user.data().info).store()
+            new User(user.data().username, user.data().password, user.data().email, user.data().info).store()
             window.location.href = "../html/index.html"
         })
         //nije naden korisnik
@@ -216,10 +215,9 @@ function addUser(bool) {
             username: username.value,
             password: password.value,
             email: email.value,
-            info: ["Nije uneseno", "Nije uneseno", "Nije uneseno", "Nije uneseno", "https://i.imgur.com/UhE3TDY.png"],
-            posts: []
+            info: ["Nije uneseno", "Nije uneseno", "Nije uneseno", "Nije uneseno", "https://i.imgur.com/UhE3TDY.png"]
         })
-        new User(username.value, password.value, email.value, [], []).store()
+        new User(username.value, password.value, email.value, []).store()
         window.location.href = "../html/index.html"
     }
 }
@@ -246,7 +244,7 @@ function UpdateUserInfo() {
         if (!valid) return
         database.collection("users").where("username", "==", editUsername.value).get().then((data) => {
             data.forEach((user) => {
-                new User(user.data().username, user.data().password, user.data().email, user.data().posts, user.data().info).store()
+                new User(user.data().username, user.data().password, user.data().email, user.data().info).store()
                 window.location.href = "../html/index.html"
             })
         })
@@ -453,7 +451,7 @@ window.addEventListener("load", () => {
         //popunjavanje podataka
         async function localUser() {
             let getuser = JSON.parse(localStorage.getItem("user"))
-            let user = new User(getuser.username, getuser.password, getuser.email, getuser.posts, getuser.info)
+            let user = new User(getuser.username, getuser.password, getuser.email, getuser.info)
             return user
         }
         async function fillInfo() {
@@ -496,10 +494,10 @@ window.addEventListener("load", () => {
 
     if (window.location.href.includes("profile.html")) {
         //dohvacanje podataka
-        var userProfile
+        let userProfile
         database.collection("users").where("username", "==", window.location.href.split("#user=")[1]).get().then(data => {
             data.forEach(user => {
-                userProfile = new User(user.data().username, "", user.data().email, [], user.data().info)
+                userProfile = new User(user.data().username, "", user.data().email, user.data().info)
             })
         }).then(async () => {
             //popunjavanje podataka
