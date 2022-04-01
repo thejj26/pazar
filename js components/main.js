@@ -209,20 +209,20 @@ function Register() {
 }
 
 //dadavanje novog korisnika
-async function addUser(bool) {
+function addUser(bool) {
     const username = document.getElementById("registerUsername")
     const password = document.getElementById("registerPassword")
-    const confirmPassword = document.getElementById("confirmPassword")
     const email = document.getElementById("email")
     if (bool) {
-        await database.collection("users").add({
+        database.collection("users").add({
             username: username.value,
             password: password.value,
             email: email.value,
             info: ["Nije uneseno", "Nije uneseno", "Nije uneseno", "Nije uneseno", "https://i.imgur.com/UhE3TDY.png"]
+        }).then(() => {
+            new User(username.value, password.value, email.value, ["Nije uneseno", "Nije uneseno", "Nije uneseno", "Nije uneseno", "https://i.imgur.com/UhE3TDY.png"]).store()
+            window.location.href = "../html/index.html"
         })
-        new User(username.value, password.value, email.value, []).store()
-        window.location.href = "../html/index.html"
     }
 }
 //logout
@@ -282,7 +282,7 @@ function UpdateUserInfo() {
                 birthday[1] = "0" + birthday[1]
             }
             editBirthday.value = birthday.join(".")
-            if (birthday[0] == 0 || birthday[1] == 0 || birthday[2] < 1920 || (birthday.length > 3 && birthday[3]!="") || birthday.length < 3 || birthday[1] > 12) {
+            if (birthday[0] == 0 || birthday[1] == 0 || birthday[2] < 1920 || (birthday.length > 3 && birthday[3] != "") || birthday.length < 3 || birthday[1] > 12) {
                 alert("Unesite ispravan datum rođenja")
                 canBeEdited = false
                 return 0
