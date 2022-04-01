@@ -121,10 +121,8 @@ class Post {
 function callDeletePost(id) {
     userPosts.find(post => post.id == id).deletePost()
 }
-//funkcija za ucitavanje svih postova
-let allPosts = []
-let userPosts = [] //svi postovi jednog usera, koristi se za brisanje postova
 
+//funkcija za ucitavanje svih postova
 function getPosts() {
     allPosts = []
     database.collection("posts").get().then((data) => {
@@ -158,6 +156,7 @@ function Login() {
     })
 }
 
+//register
 function Register() {
     //detekcija praznih polja
     const username = document.getElementById("registerUsername")
@@ -208,6 +207,7 @@ function Register() {
         addUser(canBeRegistered)
     })
 }
+
 //dadavanje novog korisnika
 async function addUser(bool) {
     const username = document.getElementById("registerUsername")
@@ -282,7 +282,7 @@ function UpdateUserInfo() {
                 birthday[1] = "0" + birthday[1]
             }
             editBirthday.value = birthday.join(".")
-            if (birthday[0] == 0 || birthday[1] == 0 || birthday[2] < 1920 || birthday.length > 3 || birthday.length < 3 || birthday[1] > 12) {
+            if (birthday[0] == 0 || birthday[1] == 0 || birthday[2] < 1920 || (birthday.length > 3 && birthday[3]!="") || birthday.length < 3 || birthday[1] > 12) {
                 alert("Unesite ispravan datum rođenja")
                 canBeEdited = false
                 return 0
@@ -362,7 +362,7 @@ function UpdateUserInfo() {
                         imageLink.value
                     ]
                     //update local storagea
-                }).then(updated = true).then(() => {
+                }).then(() => updated = true).then(() => {
                     UpdateLocalUser(updated, canBeEdited)
                 })
             }
@@ -370,6 +370,7 @@ function UpdateUserInfo() {
 
 }
 
+//sortiranje i filtriranje postova
 async function Sort_Filter() {
     //sort
     let sort = ""
@@ -431,6 +432,9 @@ async function Sort_Filter() {
     window.location.href = `../html/posts.html#sort=${sort} filter=${filter} search=${search.value} location=${location.value}`
 }
 
+let allPosts = []
+let userPosts = [] //svi postovi jednog usera, koristi se za brisanje postova
+
 //DOM user managment
 if (document.location.href.includes("login.html")) { //dodaje eventove buttonima
     document.getElementById("loginBtn").addEventListener("click", () => Login())
@@ -438,7 +442,7 @@ if (document.location.href.includes("login.html")) { //dodaje eventove buttonima
 }
 
 window.addEventListener("load", () => {
-    //sve stranice soim logina (navbar,sidebar)
+    //sve stranice osim logina (navbar,sidebar)
     if (!window.location.href.includes("login.html")) { //izbjegavanje errora radi nepostojecih elemenata
         if (localStorage.getItem("user") != null) { //korisnik je ulogiran
             document.getElementById("sidebarLogin").style.display = "none"
@@ -480,7 +484,6 @@ window.addEventListener("load", () => {
     }
     //popunjavanje korisnickih podataka za accountEdit
     if (window.location.href.includes("accountEdit")) {
-
         let user = JSON.parse(localStorage.getItem("user"))
         imageLink.value = user.info[4]
         editUsername.value = user.username
@@ -495,7 +498,7 @@ window.addEventListener("load", () => {
     if (window.location.href.includes("posts.html")) {
         getPosts()
     }
-
+    //popunjavanje podataka kod javnog profila
     if (window.location.href.includes("profile.html")) {
         //dohvacanje podataka
         let userProfile
