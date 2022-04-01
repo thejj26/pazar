@@ -111,7 +111,7 @@ class Post {
             database.collection("posts").where("id", "==", String(this.id)).get().then(data => {
                 data.forEach(doc => {
                     doc.ref.delete()
-                    
+
                 })
             }).then(console.log("izrbisano"))
         }
@@ -123,7 +123,7 @@ function callDeletePost(id) {
 }
 //funkcija za ucitavanje svih postova
 let allPosts = []
-let userPosts = []  //svi postovi jednog usera, koristi se za brisanje postova
+let userPosts = [] //svi postovi jednog usera, koristi se za brisanje postova
 
 function getPosts() {
     allPosts = []
@@ -209,9 +209,13 @@ function Register() {
     })
 }
 //dadavanje novog korisnika
-function addUser(bool) {
+async function addUser(bool) {
+    const username = document.getElementById("registerUsername")
+    const password = document.getElementById("registerPassword")
+    const confirmPassword = document.getElementById("confirmPassword")
+    const email = document.getElementById("email")
     if (bool) {
-        database.collection("users").add({
+        await database.collection("users").add({
             username: username.value,
             password: password.value,
             email: email.value,
