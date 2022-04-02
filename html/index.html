@@ -88,9 +88,22 @@
         </div>
         <div class="start-div center-align">
             <a class="waves-effect waves-light btn account-btn big-btn" href="../html/posts.html">Pogledaj oglase</a>
-            <a class="waves-effect waves-light btn account-btn big-btn">Objavi novi oglas</a>
+            <a class="waves-effect waves-light btn account-btn big-btn modal-trigger" href="#newPost">Objavi novi
+                oglas</a>
         </div>
     </main>
+    <!--modal za objavlivanje novog oglasa-->
+    <div id="newPost" class="modal">
+        <div class="modal-content row">
+            <div class="col s6 m6 l6">
+                <h3>Novi oglas</h3>
+            </div>
+            <div class="col s6 m6 l6 right-align"> <a class="btn-flat waves-effect waves-light right-align ">
+                <i class="modal-close material-icons">close</i>
+                </a>
+            </div>
+        </div>
+    </div>
     <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-firestore-compat.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>

@@ -89,7 +89,7 @@ main {
     margin-top: 4em;
 }
 
-main div div h3 {
+h3 {
     color: #488f32;
 }
 
@@ -240,4 +240,34 @@ a>[owner] {
     color: #fff !important;
     background: crimson !important;
     border-color: crimson !important;
+}
+
+.modal{
+    width: 100% !important;
+    max-height: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    top:0 !important;
+}
+.modal-content{
+    width: 100% !important;
+    max-height: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    top:0 !important
+}
+.modal-content a {
+    width: 100% !important;
+    height: 3em;
+}
+
+.modal-content a i {
+    color: #727272 !important;
+    font-size: 2.7em !important;
+    transition: ease 0.25s;
+    border-radius: 0.1em;
+}
+
+.modal-content a i:hover {
+    background-color: #cfcfcf !important;
 }

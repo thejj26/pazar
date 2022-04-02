@@ -524,4 +524,10 @@ window.addEventListener("load", () => {
             posts.forEach(post => post.addPost())
         })
     }
+    //modal
+    if(window.location.href.includes("index.html")){
+        let modal=M.Modal.init(document.querySelector(".modal"),{
+            dismissible:false
+        }) 
+    }
 })
