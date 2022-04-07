@@ -223,7 +223,7 @@ a>[owner] {
     filter: grayscale(0);
 }
 
-[search-label] {
+[search-label], [newPost] {
     color: #488f32 !important;
     font-size: 1.4em;
 }

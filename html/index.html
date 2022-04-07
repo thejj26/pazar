@@ -95,12 +95,85 @@
     <!--modal za objavlivanje novog oglasa-->
     <div id="newPost" class="modal">
         <div class="modal-content row">
-            <div class="col s6 m6 l6">
+            <div class="col s9 m9 l9">
                 <h3>Novi oglas</h3>
             </div>
-            <div class="col s6 m6 l6 right-align"> <a class="btn-flat waves-effect waves-light right-align ">
-                <i class="modal-close material-icons">close</i>
+            <div class="col s3 m3 l3 right-align">
+                <a class="btn-flat waves-effect waves-light right-align">
+                    <i class="modal-close material-icons">close</i>
                 </a>
+            </div>
+            <div class="col s12 m6 l6 center-align input-field">
+                <p search-label class="left-align">Ime oglasa</p>
+                <input id="postTitle" type="text">
+            </div>
+            <div class="col s12 m6 l6 center-align input-field">
+                <p search-label class="left-align">Link na sliku</p>
+                <input id="postImageLink" type="text">
+            </div>
+            <div class="col s6 m3 l3 input-field center-align">
+                <p search-label class="left-align">Cijena</p>
+                <input id="price" type="number">
+            </div>
+            <div class="col s6 m3 l3 left-align">
+                <p>
+                    <label>
+                        <input type="radio" class="with-gap" id="kg" name="suffix" checked>
+                        <span>kn / kg</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input type="radio" class="with-gap" id="l" name="suffix">
+                        <span>kn / l</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input type="radio" class="with-gap" id="kom" name="suffix">
+                        <span>kn / kom</span>
+                    </label>
+                </p>
+            </div>
+            <div class="col s12 m6 l6 left-align">
+                <p newPost>Kategorija</p>
+                <p>
+                    <label>
+                        <input type="radio" class="with-gap" id="fruit" name="category">
+                        <span>Voće i voćni proizvodi</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input type="radio" class="with-gap" id="vegetables" name="category">
+                        <span>Povrće i povrtni proizvodi</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input type="radio" class="with-gap" id="meat" name="category">
+                        <span>Meso i mesni proizvodi</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input type="radio" class="with-gap" id="nonMeat" name="category">
+                        <span>Nemesni proizvodi životinjskog podrijetla</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input type="radio" class="with-gap" id="other" name="category" checked>
+                        <span>Ostalo</span>
+                    </label>
+                </p>
+            </div>
+            <div class="col s12 m12 l12 center-align input-field">
+                <p search-label class="left-align">Opis oglasa</p>
+                <textarea id="postDescription" class="materialize-textarea"></textarea>
+            </div>
+            <div class="col s4 m2 l2 offset-s4 offset-m5 offset-l5">
+                <a class="waves-effect waves-light btn" onclick="NewPost()">Objavi</a>
             </div>
         </div>
     </div>

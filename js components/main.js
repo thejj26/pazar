@@ -47,7 +47,7 @@ class Post {
     }
     async getOwner() {
         let owner = await database.collection("users").doc(this.owner).get()
-        return new User(owner.data().username, "", owner.data().email, [], owner.data().info)
+        return new User(owner.data().username, "", owner.data().email, owner.data().info)
     }
     async addPost() {
         let owner = await this.getOwner()
@@ -89,7 +89,7 @@ class Post {
                 <p location>Lokacija: ${owner.info[1]}</p>
             </div>
         </div>`
-        } else {
+        } else if (window.location.href.includes("account.html")) {
             userPosts.push(this)
             document.getElementById("posts").innerHTML += `
             <div class="col s12 m6 l4 row">
@@ -132,6 +132,7 @@ function getPosts() {
     }).then(() => {
         allPosts.forEach(post => post.addPost())
     })
+    return allPosts
 }
 
 //login
@@ -432,6 +433,23 @@ async function Sort_Filter() {
     window.location.href = `../html/posts.html#sort=${sort} filter=${filter} search=${search.value} location=${location.value}`
 }
 
+//dodavanje novog oglasa
+async function NewPost() {
+    let postIDs = allPosts.map(post => post.id)
+    let title = document.getElementById("postTitle").value
+    let imageLink = document.getElementById("postImageLink").value
+    let price = document.getElementById("price").value
+    let priceSuffix = document.querySelector("input[name='suffix']:checked").id
+    let category = document.querySelector("input[name='category']:checked").id
+    let description = document.getElementById("postDescription").value
+    let postID = Math.floor(Math.random() * 1000000)
+    while (postIDs.includes(postID)) {
+        postID = Math.floor(Math.random() * 1000000)
+    }
+    let owner=await database.collection("users").where("username", "==", String(JSON.parse(localStorage.getItem("user")).username)).get()
+    let post = new Post(category, "", description, imageLink, owner.docs[0].id, price, priceSuffix, title, postID)
+    console.log(post)
+}
 let allPosts = []
 let userPosts = [] //svi postovi jednog usera, koristi se za brisanje postova
 
@@ -525,9 +543,10 @@ window.addEventListener("load", () => {
         })
     }
     //modal
-    if(window.location.href.includes("index.html")){
-        let modal=M.Modal.init(document.querySelector(".modal"),{
-            dismissible:false
-        }) 
+    if (window.location.href.includes("index.html")) {
+        let modal = M.Modal.init(document.querySelector(".modal"), {
+            dismissible: false
+        })
+        getPosts()
     }
 })

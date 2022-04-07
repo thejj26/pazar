@@ -1,0 +1,1 @@
+document.getElementsByName("suffix").filter(x=>x.checked)
