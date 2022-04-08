@@ -442,13 +442,49 @@ async function NewPost() {
     let priceSuffix = document.querySelector("input[name='suffix']:checked").id
     let category = document.querySelector("input[name='category']:checked").id
     let description = document.getElementById("postDescription").value
+    let date = new Date().getDay() + "." + new Date().getMonth() + "." + new Date().getFullYear()
+    //generiranje random pos id
     let postID = Math.floor(Math.random() * 1000000)
     while (postIDs.includes(postID)) {
         postID = Math.floor(Math.random() * 1000000)
     }
-    let owner=await database.collection("users").where("username", "==", String(JSON.parse(localStorage.getItem("user")).username)).get()
+    //dohvacanje owner id i stvaranje post objekta
+    let owner = await database.collection("users").where("username", "==", String(JSON.parse(localStorage.getItem("user")).username)).get()
     let post = new Post(category, "", description, imageLink, owner.docs[0].id, price, priceSuffix, title, postID)
-    console.log(post)
+    //provjera unesenih podataka
+    switch ("") {
+        case title:
+            alert("Oglas treba sadržavati naslov")
+            return
+        case imageLink:
+            alert("Oglas treba sadržavati sliku")
+            return
+        case price:
+            alert("Nema unesene cijene")
+            return
+        case description:
+            alert("Oglas treba sadržavati opis")
+            return
+    }
+    if (price <= 0) {
+        alert("Cijena mora biti veća od 0")
+        return
+    }
+    //stvaranje posta
+    database.collection("posts").add({
+        category: post.category,
+        description: post.description,
+        image: post.image,
+        owner: post.owner,
+        price: post.price,
+        priceSuffix: post.priceSuffix,
+        title: post.title,
+        id: post.id,
+        date: date
+    }).then(() => {
+        alert("Oglas je objavljen")
+        window.location.href = "../html/posts.html"
+    })
 }
 let allPosts = []
 let userPosts = [] //svi postovi jednog usera, koristi se za brisanje postova
