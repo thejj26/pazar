@@ -275,3 +275,8 @@ a>[owner] {
 .modal-content a i:hover {
     background-color: #cfcfcf !important;
 }
+
+.toast-alert{
+    background-color: #fff !important;
+    color: #488f32 !important;
+}
