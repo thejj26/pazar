@@ -452,11 +452,11 @@ async function Sort_Filter() {
     let filter = ""
     switch (true) {
         case (document.getElementById("price-lh").checked):
-            allPosts.sort((a, b) => a.price > b.price ? 1 : -1)
+            allPosts.sort((a, b) => Number(a.price) > Number(b.price) ? 1 : -1)
             sort = "price-lh"
             break;
         case (document.getElementById("price-hl").checked):
-            allPosts.sort((a, b) => a.price < b.price ? 1 : -1)
+            allPosts.sort((a, b) => Number(a.price) < Number(b.price) ? 1 : -1)
             sort = "price-hl"
             break;
         case (document.getElementById("date-lh").checked):
@@ -521,6 +521,7 @@ async function Sort_Filter() {
 
 //dodavanje novog oglasa
 async function NewPost() {
+    let localuser = JSON.parse(localStorage.getItem("user"))
     if (localStorage.getItem("user") == null) {
         M.toast({
             classes: "toast-alert",
@@ -528,9 +529,8 @@ async function NewPost() {
         })
         return
     }
-    let localuser = JSON.parse(localStorage.getItem("user"))
     for (let i = 0; i < localuser.info.length; i++) {
-        if (localUser.info[i] == "Nije uneseno") {
+        if (localuser.info[i] == "Nije uneseno") {
             M.toast({
                 classes: "toast-alert",
                 html: "Morate unijeti sve korisničke podatke prije nego što objavite oglas"
@@ -599,7 +599,7 @@ async function NewPost() {
         description: post.description,
         image: post.image,
         owner: post.owner,
-        price: post.price,
+        price: Number(post.price),
         priceSuffix: post.priceSuffix,
         title: post.title,
         id: post.id,
