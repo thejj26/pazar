@@ -287,11 +287,11 @@ async function UpdateUserInfo() {
     let localuser = JSON.parse(localStorage.getItem("user"))
     let userId = ""
     let birthday = editBirthday.value.split(".")
-
+    let changePasword = false
     async function Valiadate() {
         //provjera dostupnosti koricniskog imena/emaila
-        let canBeEdited=true
-        database.collection("users").get().then(data => {
+        let canBeEdited = true
+        await database.collection("users").get().then(data => {
             data.forEach(user => {
                 if (user.id != userId) {
                     if (user.data().username == editUsername.value) {
@@ -396,8 +396,11 @@ async function UpdateUserInfo() {
                 canBeEdited = false
                 return false
             }
+            if (canBeEdited && oldPassword.value == localuser.password && newPassword.value.length > 5 && newPassword.value != oldPassword.value) {
+                changePasword = true
+            }
         })
-        if(canBeEdited) return true
+        if (canBeEdited) return true
         return false
     }
     database.collection("users").where("username", "==", localuser.username).get().then(data => {
@@ -425,7 +428,7 @@ async function UpdateUserInfo() {
                 database.collection("users").doc(userId).update({
                     username: editUsername.value,
                     email: editEmail.value,
-                    password: newPassword.value,
+                    password: changePasword ? newPassword.value : localuser.password,
                     info: [
                         editPhone.value,
                         editLocation.value,
@@ -506,6 +509,23 @@ async function Sort_Filter() {
 
 //dodavanje novog oglasa
 async function NewPost() {
+    if (localStorage.getItem("user") == null) {
+        M.toast({
+            classes: "toast-alert",
+            html: "Morate biti prijavljeni kako bi mogli objaviti oglas"
+        })
+        return
+    }
+    let localuser = JSON.parse(localStorage.getItem("user"))
+    for (let i = 0; i < localuser.info.length; i++) {
+        if (localUser.info[i] == "Nije uneseno") {
+            M.toast({
+                classes: "toast-alert",
+                html: "Morate unijeti sve korisničke podatke prije nego što objavite oglas"
+            })
+            return
+        }
+    }
     let postIDs = allPosts.map(post => post.id)
     let title = document.getElementById("postTitle").value
     let imageLink = document.getElementById("postImageLink").value
@@ -513,7 +533,12 @@ async function NewPost() {
     let priceSuffix = document.querySelector("input[name='suffix']:checked").id
     let category = document.querySelector("input[name='category']:checked").id
     let description = document.getElementById("postDescription").value
-    let date = new Date().getDay() + "." + new Date().getMonth() + "." + new Date().getFullYear()
+    let today = new Date()
+    let date = today.getDate() + "." + (today.getMonth() + 1) + "." + today.getFullYear()
+    date = date.split(".")
+    if (date[0].length == 1) date[0] = "0" + date[0]
+    if (date[1].length == 1) date[1] = "0" + date[1]
+    date = date.join(".")
     //generiranje random pos id
     let postID = Math.floor(Math.random() * 1000000)
     while (postIDs.includes(postID)) {
@@ -521,7 +546,7 @@ async function NewPost() {
     }
     //dohvacanje owner id i stvaranje post objekta
     let owner = await database.collection("users").where("username", "==", String(JSON.parse(localStorage.getItem("user")).username)).get()
-    let post = new Post(category, "", description, imageLink, owner.docs[0].id, price, priceSuffix, title, postID)
+    let post = new Post(category, date, description, imageLink, owner.docs[0].id, price, priceSuffix, title, postID)
     //provjera unesenih podataka
     switch ("") {
         case title:
@@ -566,7 +591,7 @@ async function NewPost() {
         priceSuffix: post.priceSuffix,
         title: post.title,
         id: post.id,
-        date: date
+        date: post.date
     }).then(() => {
         M.toast({
             classes: "toast-alert",
