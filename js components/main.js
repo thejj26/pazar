@@ -107,18 +107,13 @@ class Post {
         }
     }
     async deletePost() {
-        database.collection("posts").where("id", "==", this.id).get().then(data => {
-            data.forEach(doc => {
-                doc.ref.delete()
-            })
+        return database.collection("posts").where("id", "==", this.id).get().then(data => {
+            //ovaj dio je sa stackoverflowa
+            const promises = data.docs.map(doc => doc.ref.delete());
+            return Promise.all(promises);
         }).then(() => {
-            M.toast({
-                classes: "toast-alert",
-                html: "Oglas je uspješno izbrisan!"
-            })
-        }).then(
             window.location.reload()
-        )
+        })
     }
 }
 
