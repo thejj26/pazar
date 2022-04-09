@@ -106,23 +106,23 @@ class Post {
             </div>`
         }
     }
-    deletePost() {
-        if (confirm("Ukoliko izbriše ovaj oglas on će nestati te ga nećete moći vratiti.\n Želite li nastaviti?")) {
-            database.collection("posts").where("id", "==", this.id).get().then(data => {
-                data.forEach(doc => {
-                    doc.ref.delete()
-                })
-            }).then(() => {
-                M.toast({
-                    classes: "toast-alert",
-                    html: "Oglas je uspješno izbrisan!"
-                })
+    async deletePost() {
+        database.collection("posts").where("id", "==", this.id).get().then(data => {
+            data.forEach(doc => {
+                doc.ref.delete()
             })
-        }
+        }).then(() => {
+            M.toast({
+                classes: "toast-alert",
+                html: "Oglas je uspješno izbrisan!"
+            })
+        }).then(
+            window.location.reload()
+        )
     }
 }
 
-function callDeletePost(id) {
+async function callDeletePost(id) {
     userPosts.find(post => post.id == id).deletePost()
 }
 
@@ -131,7 +131,6 @@ function getPosts() {
     allPosts = []
     database.collection("posts").get().then((data) => {
         data.forEach((post) => {
-            console.log(post.data().id)
             allPosts.push(new Post(post.data().category, post.data().date, post.data().description, post.data().image, post.data().owner, post.data().price, post.data().priceSuffix, post.data().title, post.data().id))
         })
     }).then(() => {
@@ -411,7 +410,6 @@ async function UpdateUserInfo() {
         //provjera validnosti unesenih podataka
         .then(async () => {
             let valiadation = await Valiadate()
-            console.log(valiadation)
             if (valiadation) {
                 //update podataka korisnika
                 if (editBirthday.value != "Nije uneseno") {

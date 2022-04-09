@@ -290,3 +290,12 @@ a>[owner] {
     background-color: #fff !important;
     color: #488f32 !important;
 }
+
+.content{
+    max-height: 30em;
+    height: 30em;
+}
+
+.desc p a{
+    color: #488f32;
+}
