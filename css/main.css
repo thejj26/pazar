@@ -169,8 +169,11 @@ main div div p {
 }
 
 img[post-img] {
-    width: 95% !important;
-    border-radius: .6rem;
+    width: 90%;
+    height: 90%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: .6em;
 }
 
 .post {
@@ -191,6 +194,10 @@ p[price],
 p[date],
 p[location] {
     color: white !important;
+}
+
+p[description] {
+   height: 10em !important;
 }
 
 p[phone],
@@ -223,7 +230,8 @@ a>[owner] {
     filter: grayscale(0);
 }
 
-[search-label], [newPost] {
+[search-label],
+[newPost] {
     color: #488f32 !important;
     font-size: 1.4em;
 }
@@ -242,24 +250,26 @@ a>[owner] {
     border-color: crimson !important;
 }
 
-.modal{
+.modal {
     width: 100vw !important;
     max-height: 100vh !important;
     height: 100vh !important;
     max-width: 100vw !important;
-    top:0 !important;
+    top: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
 }
-.modal-content{
+
+.modal-content {
     width: 100vw !important;
     max-height: 100vh !important;
     height: 100vh !important;
     max-width: 100vw !important;
-    top:0 !important;
+    top: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
 }
+
 .modal-content a {
     width: 100% !important;
     height: 3em;
@@ -276,7 +286,7 @@ a>[owner] {
     background-color: #cfcfcf !important;
 }
 
-.toast-alert{
+.toast-alert {
     background-color: #fff !important;
     color: #488f32 !important;
 }
