@@ -460,11 +460,23 @@ async function Sort_Filter() {
             sort = "price-hl"
             break;
         case (document.getElementById("date-lh").checked):
-            //todo
+            allPosts.sort((a, b) => {
+                let dateA = a.date.split(".")
+                let dateB = b.date.split(".")
+                dateA = new Date(dateA[2], dateA[1], dateA[0])
+                dateB = new Date(dateB[2], dateB[1], dateB[0])
+                return dateA > dateB ? 1 : -1
+            })
             sort = "date-lh"
             break;
         case (document.getElementById("date-hl").checked):
-            //todo
+            allPosts.sort((a, b) => {
+                let dateA = a.date.split(".")
+                let dateB = b.date.split(".")
+                dateA = new Date(dateA[2], dateA[1], dateA[0])
+                dateB = new Date(dateB[2], dateB[1], dateB[0])
+                return dateA < dateB ? 1 : -1
+            })
             sort = "date-hl"
             break;
     }
