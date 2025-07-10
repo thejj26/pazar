@@ -3,12 +3,12 @@ M.AutoInit()
 
 //firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyD2GC10JQEjDIZ3SrpGXBE1PbQTxpTv830",
-    authDomain: "pazar-d123a.firebaseapp.com",
-    projectId: "pazar-d123a",
-    storageBucket: "pazar-d123a.appspot.com",
-    messagingSenderId: "245300399104",
-    appId: "1:245300399104:web:f919e668646d1791a19ce5"
+    apiKey: "x",
+    authDomain: "x",
+    projectId: "x",
+    storageBucket: "x",
+    messagingSenderId: "x",
+    appId: "x"
 }
 const app = firebase.initializeApp(firebaseConfig)
 let database = app.firestore()
